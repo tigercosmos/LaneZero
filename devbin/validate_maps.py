@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from schema.map import SIMPLE_OPENDRIVE_SCHEMA
 import json
 import sys
 from pathlib import Path
@@ -8,6 +7,7 @@ from pathlib import Path
 from jsonschema import validate, ValidationError
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from schema.map import SIMPLE_OPENDRIVE_SCHEMA
 
 
 def validate_map_file(map_file_path):
