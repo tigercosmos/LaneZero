@@ -41,8 +41,6 @@ except (ImportError, AttributeError):
 
 __all__ = [
     'enable',
-    'RManager',
-    'mgr',
 ]
 
 
