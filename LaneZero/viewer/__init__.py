@@ -28,32 +28,20 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup, find_packages
+"""
+LaneZero Qt Viewer Module
+"""
 
-setup(
-    name='LaneZero',
-    version='1.0.0',
-    description='A traffic simulation library',
-    packages=find_packages(),
-    python_requires='>=3.8',
-    install_requires=[
-        'pytest>=7.0',
-    ],
-    entry_points={
-        'console_scripts': [
-            'LaneZeroView=LaneZero.viewer._gui:launch',
-        ],
-    },
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-    ],
+from ._viewer_core import (
+    enable,
+    mgr,
+    RManager,
 )
+
+if enable:
+    from ._gui import (
+        controller,
+        launch,
+    )
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

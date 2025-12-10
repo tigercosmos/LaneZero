@@ -28,6 +28,8 @@ echo -e "${YELLOW}Copying Python module...${NC}"
 cp _core*.so ../LaneZero/
 
 echo -e "${GREEN}Build completed successfully!${NC}"
+echo -e "${YELLOW}LaneZero viewer executable:${NC}"
+echo -e "  build/bin/LaneZeroView"
 echo -e "${YELLOW}To install in development mode, run:${NC}"
 echo -e "  pip install -e ."
 echo -e "${YELLOW}To run tests, run:${NC}"

@@ -27,32 +27,45 @@
  */
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
-namespace py = pybind11;
-
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
+#include <viewer/wrap_viewer.hpp>
+#include <viewer/viewer.hpp>
 
 namespace LaneZero
 {
+
 namespace python
 {
-void wrap_viewer(py::module & module);
-} /* end namespace python */
-} /* end namespace LaneZero */
 
-PYBIND11_MODULE(_core, module)
+void wrap_RManager(pybind11::module & mod)
 {
-    module.doc() = "LaneZero: A traffic simulation library";
-
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_Simulation(module);
-
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
+    pybind11::class_<RManager>(mod, "RManager")
+        .def_static("get_instance", &RManager::instance, pybind11::return_value_policy::reference)
+        .def("set_up", &RManager::setUp, pybind11::return_value_policy::reference)
+        .def("exec", &RManager::exec)
+        .def("show", &RManager::show)
+        .def("quit", &RManager::quit)
+        .def("resize", &RManager::resize, pybind11::arg("w"), pybind11::arg("h"))
+        .def("set_window_title", &RManager::setWindowTitle, pybind11::arg("title"))
+        .def_property_readonly("main_window", &RManager::mainWindow)
+        .def_property_readonly("file_menu", &RManager::fileMenu)
+        .def_property_readonly("simulation_menu", &RManager::simulationMenu)
+        .def_property_readonly("view_menu", &RManager::viewMenu)
+        .def_property_readonly("window_menu", &RManager::windowMenu);
 }
+
+void wrap_viewer(pybind11::module & mod)
+{
+    pybind11::module viewer_mod = mod.def_submodule("viewer", "Qt viewer module");
+
+    wrap_RManager(viewer_mod);
+
+    viewer_mod.attr("mgr") = pybind11::cast(&RManager::instance(), pybind11::return_value_policy::reference);
+}
+
+} /* end namespace python */
+
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

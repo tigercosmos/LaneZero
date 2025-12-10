@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #
 # Copyright (c) 2025, LaneZero Contributors
@@ -28,32 +29,26 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup, find_packages
+"""
+LaneZero Viewer Launcher
+"""
 
-setup(
-    name='LaneZero',
-    version='1.0.0',
-    description='A traffic simulation library',
-    packages=find_packages(),
-    python_requires='>=3.8',
-    install_requires=[
-        'pytest>=7.0',
-    ],
-    entry_points={
-        'console_scripts': [
-            'LaneZeroView=LaneZero.viewer._gui:launch',
-        ],
-    },
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-    ],
-)
+import sys
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(script_dir, '..'))
+sys.path.insert(0, project_root)
+
+# flake8: noqa: E402
+from LaneZero.viewer import enable, launch
+
+if __name__ == '__main__':
+    if not enable:
+        print("Error: Qt viewer is not enabled")
+        print("Please rebuild with: cmake .. -DLANEZERO_USE_QT=ON")
+        sys.exit(1)
+    
+    sys.exit(launch())
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

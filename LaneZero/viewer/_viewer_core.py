@@ -28,32 +28,35 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from setuptools import setup, find_packages
+"""
+Import C++ viewer implementation.
+"""
 
-setup(
-    name='LaneZero',
-    version='1.0.0',
-    description='A traffic simulation library',
-    packages=find_packages(),
-    python_requires='>=3.8',
-    install_requires=[
-        'pytest>=7.0',
-    ],
-    entry_points={
-        'console_scripts': [
-            'LaneZeroView=LaneZero.viewer._gui:launch',
-        ],
-    },
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-    ],
-)
+enable = False
+try:
+    from LaneZero._core import viewer as _viewer_impl
+    enable = True
+except (ImportError, AttributeError):
+    pass
+
+__all__ = [
+    'enable',
+    'RManager',
+    'mgr',
+]
+
+
+def _load(symbol_list):
+    if enable:
+        for name in symbol_list:
+            globals()[name] = getattr(_viewer_impl, name)
+    else:
+        for name in symbol_list:
+            globals()[name] = None
+
+
+_load(['RManager', 'mgr'])
+
+del _load
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * Copyright (c) 2025, LaneZero Contributors
  *
@@ -26,33 +28,67 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pybind11/pybind11.h>
+#include <string>
 
-namespace py = pybind11;
-
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
+#include <QMainWindow>
+#include <QApplication>
+#include <QMenuBar>
+#include <QMenu>
+#include <QObject>
 
 namespace LaneZero
 {
-namespace python
+
+class RManager : public QObject
 {
-void wrap_viewer(py::module & module);
-} /* end namespace python */
+    Q_OBJECT
+
+public:
+
+    ~RManager() override;
+
+    RManager & setUp();
+
+    static RManager & instance();
+
+    QCoreApplication * core() { return m_core; }
+
+    QMainWindow * mainWindow() { return m_main_window; }
+
+    QMenu * fileMenu() { return m_file_menu; }
+    QMenu * simulationMenu() { return m_simulation_menu; }
+    QMenu * viewMenu() { return m_view_menu; }
+    QMenu * windowMenu() { return m_window_menu; }
+
+    void quit() { m_core->quit(); }
+
+    int exec() { return m_core->exec(); }
+
+    void show() { m_main_window->show(); }
+
+    void resize(int w, int h) { m_main_window->resize(w, h); }
+
+    void setWindowTitle(std::string const & title) { m_main_window->setWindowTitle(QString::fromStdString(title)); }
+
+private:
+
+    RManager();
+
+    void setUpWindow();
+    void setUpMenu();
+
+    bool m_already_setup = false;
+
+    QCoreApplication * m_core = nullptr;
+    QMainWindow * m_main_window = nullptr;
+
+    QMenu * m_file_menu = nullptr;
+    QMenu * m_simulation_menu = nullptr;
+    QMenu * m_view_menu = nullptr;
+    QMenu * m_window_menu = nullptr;
+
+}; /* end class RManager */
+
 } /* end namespace LaneZero */
-
-PYBIND11_MODULE(_core, module)
-{
-    module.doc() = "LaneZero: A traffic simulation library";
-
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_Simulation(module);
-
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
-}
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

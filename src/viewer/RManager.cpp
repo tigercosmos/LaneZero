@@ -26,33 +26,63 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pybind11/pybind11.h>
-
-namespace py = pybind11;
-
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
+#include <viewer/RManager.hpp>
 
 namespace LaneZero
 {
-namespace python
+
+RManager & RManager::instance()
 {
-void wrap_viewer(py::module & module);
-} /* end namespace python */
-} /* end namespace LaneZero */
-
-PYBIND11_MODULE(_core, module)
-{
-    module.doc() = "LaneZero: A traffic simulation library";
-
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_Simulation(module);
-
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
+    static RManager ret;
+    return ret;
 }
+
+RManager::RManager()
+    : QObject()
+{
+    m_core = QApplication::instance();
+    static int argc = 1;
+    static char exename[] = "LaneZeroView";
+    static char * argv[] = {exename};
+    if (nullptr == m_core)
+    {
+        m_core = new QApplication(argc, argv);
+    }
+
+    m_main_window = new QMainWindow;
+    m_main_window->setWindowTitle("LaneZero Viewer");
+}
+
+RManager & RManager::setUp()
+{
+    if (!m_already_setup)
+    {
+        this->setUpWindow();
+        this->setUpMenu();
+        m_already_setup = true;
+    }
+    return *this;
+}
+
+RManager::~RManager()
+{
+}
+
+void RManager::setUpWindow()
+{
+    m_main_window->resize(1200, 800);
+}
+
+void RManager::setUpMenu()
+{
+    QMenuBar * menu_bar = m_main_window->menuBar();
+
+    m_file_menu = menu_bar->addMenu("&File");
+    m_simulation_menu = menu_bar->addMenu("&Simulation");
+    m_view_menu = menu_bar->addMenu("&View");
+    m_window_menu = menu_bar->addMenu("&Window");
+}
+
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

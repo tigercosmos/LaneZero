@@ -7,6 +7,41 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
+# Option to build with Qt GUI
+option(LANEZERO_USE_QT "Build with Qt GUI support" ON)
+
+if(LANEZERO_USE_QT)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
+    set(CMAKE_AUTOUIC ON)
+    
+    # Find system Qt6
+    find_package(Qt6 COMPONENTS Core Widgets REQUIRED)
+    
+    # Find PySide6 libraries for linking
+    execute_process(
+        COMMAND ${Python3_EXECUTABLE} -c "import PySide6; import os; print(os.path.dirname(PySide6.__file__))"
+        OUTPUT_VARIABLE PYSIDE6_PATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    message(STATUS "PySide6 path: ${PYSIDE6_PATH}")
+    
+    # Add PySide6 include directories
+    if(EXISTS "${PYSIDE6_PATH}/include")
+        include_directories("${PYSIDE6_PATH}/include")
+    endif()
+    
+    # Find PySide6 library
+    file(GLOB PYSIDE6_LIBRARY_CANDIDATES 
+        "${PYSIDE6_PATH}/libpyside6.*.dylib"
+        "${PYSIDE6_PATH}/libpyside6.*.so"
+    )
+    if(PYSIDE6_LIBRARY_CANDIDATES)
+        list(GET PYSIDE6_LIBRARY_CANDIDATES 0 PYSIDE6_LIBRARY)
+        message(STATUS "PySide6 library: ${PYSIDE6_LIBRARY}")
+    endif()
+endif()
+
 # Fetch pybind11
 include(FetchContent)
 FetchContent_Declare(
@@ -21,6 +56,12 @@ set(LANEZERO_SOURCES
     src/map/Map.cpp
     src/vehicle/Vehicle.cpp
     src/simulation/Simulation.cpp
+)
+
+# Viewer sources (Qt GUI)
+set(LANEZERO_VIEWER_SOURCES
+    src/viewer/RManager.cpp
+    src/viewer/wrap_viewer.cpp
 )
 
 # Python module
@@ -39,8 +80,34 @@ target_include_directories(_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/simulation
 )
 
+if(LANEZERO_USE_QT)
+    target_sources(_core PRIVATE ${LANEZERO_VIEWER_SOURCES})
+    target_link_libraries(_core PRIVATE Qt6::Core Qt6::Widgets)
+    target_compile_definitions(_core PRIVATE LANEZERO_USE_QT)
+    
+    if(PYSIDE6_LIBRARY)
+        target_link_libraries(_core PRIVATE ${PYSIDE6_LIBRARY})
+    endif()
+endif()
+
 # Install the Python module
 install(TARGETS _core LIBRARY DESTINATION LaneZero)
+
+# Configure and install LaneZeroView launcher script
+if(LANEZERO_USE_QT)
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/scripts/LaneZeroView.py
+        ${CMAKE_CURRENT_BINARY_DIR}/bin/LaneZeroView
+        COPYONLY
+    )
+    
+    # Make the script executable
+    file(CHMOD ${CMAKE_CURRENT_BINARY_DIR}/bin/LaneZeroView
+        PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                   GROUP_READ GROUP_EXECUTE
+                   WORLD_READ WORLD_EXECUTE
+    )
+endif()
 
 # Optionally build a standalone executable (if main.cpp exists)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)

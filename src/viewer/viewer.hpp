@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * Copyright (c) 2025, LaneZero Contributors
  *
@@ -26,33 +28,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pybind11/pybind11.h>
-
-namespace py = pybind11;
-
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
-
-namespace LaneZero
-{
-namespace python
-{
-void wrap_viewer(py::module & module);
-} /* end namespace python */
-} /* end namespace LaneZero */
-
-PYBIND11_MODULE(_core, module)
-{
-    module.doc() = "LaneZero: A traffic simulation library";
-
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_Simulation(module);
-
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
-}
+#include <viewer/RManager.hpp>
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:
