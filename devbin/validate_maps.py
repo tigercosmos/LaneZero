@@ -29,7 +29,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from schema.map import SIMPLE_OPENDRIVE_SCHEMA
 import json
 import sys
 from pathlib import Path
@@ -37,6 +36,8 @@ from pathlib import Path
 from jsonschema import validate, ValidationError
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from schema.map import SIMPLE_OPENDRIVE_SCHEMA  # noqa: E402
 
 
 def validate_map_file(map_file_path):
