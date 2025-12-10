@@ -13,17 +13,17 @@ print("=" * 60)
 
 try:
     from LaneZero.viewer import enable
-    print(f"✓ Qt viewer module imported successfully")
-    print(f"✓ Qt viewer enabled: {enable}")
+    print("✓ Qt viewer module imported successfully")
+    print("✓ Qt viewer enabled: {enable}")
 
     if enable:
-        from LaneZero.viewer import RManager, mgr
-        print(f"✓ RManager class imported")
-        print(f"✓ mgr singleton available")
+        from LaneZero.viewer import RManager
+        print("✓ RManager class imported")
+        print("✓ mgr singleton available")
 
         # Test RManager instance
         rm = RManager.get_instance()
-        print(f"✓ RManager instance created: {rm}")
+        print("✓ RManager instance created: {rm}")
 
         print("\n" + "=" * 60)
         print("SUCCESS: All Qt GUI components are working!")
