@@ -10,12 +10,17 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(tests
     test_main.cpp
-    ../src/Map.cpp
-    ../src/Vehicle.cpp
-    ../src/Simulation.cpp
+    ../src/map/Map.cpp
+    ../src/vehicle/Vehicle.cpp
+    ../src/simulation/Simulation.cpp
 )
 
-target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_include_directories(tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/map
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/vehicle
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/simulation
+)
 target_link_libraries(tests PRIVATE GTest::gtest_main)
 
 enable_testing()
