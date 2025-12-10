@@ -32,10 +32,11 @@
 #include "Vehicle.h"
 #include <vector>
 
-class Simulation {
+class Simulation
+{
 public:
     Map simulation_map;
-    std::vector<Vehicle*> vehicles;
+    std::vector<Vehicle *> vehicles;
     double current_time_s;
 
     Simulation();

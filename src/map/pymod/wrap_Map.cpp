@@ -49,7 +49,8 @@ void wrap_Map(py::module & module)
     py::class_<Map>(module, "Map")
         .def(py::init<>())
         .def_readwrite("lanes", &Map::lanes)
-        .def("initialize_highway", &Map::initialize_highway,
+        .def("initialize_highway",
+             &Map::initialize_highway,
              py::arg("num_lanes"),
              py::arg("lane_length"),
              "Initialize a highway with specified number of lanes and lane length");

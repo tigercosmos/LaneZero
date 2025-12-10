@@ -32,12 +32,14 @@
 
 class Map;
 
-enum class VehicleType {
+enum class VehicleType
+{
     Car,
     Truck
 };
 
-class Vehicle {
+class Vehicle
+{
 public:
     int id;
     VehicleType type;
@@ -48,12 +50,18 @@ public:
     double length_m;
     double width_m;
 
-    Vehicle(int id, VehicleType type, double position, double velocity, 
-            int lane_id, double length, double width);
+    Vehicle(int id,
+            VehicleType type,
+            double position,
+            double velocity,
+            int lane_id,
+            double length,
+            double width);
 
     void update_kinematics(double delta_t);
 
-    virtual void calculate_control(const Map& map, const std::vector<Vehicle*>& surrounding_vehicles);
+    virtual void calculate_control(const Map & map,
+                                   const std::vector<Vehicle *> & surrounding_vehicles);
 
     virtual ~Vehicle() = default;
 };

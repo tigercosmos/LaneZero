@@ -58,10 +58,12 @@ void wrap_Vehicle(py::module & module)
         .def_readwrite("current_lane_id", &Vehicle::current_lane_id)
         .def_readwrite("length_m", &Vehicle::length_m)
         .def_readwrite("width_m", &Vehicle::width_m)
-        .def("update_kinematics", &Vehicle::update_kinematics,
+        .def("update_kinematics",
+             &Vehicle::update_kinematics,
              py::arg("delta_t"),
              "Update vehicle position and velocity based on acceleration")
-        .def("calculate_control", &Vehicle::calculate_control,
+        .def("calculate_control",
+             &Vehicle::calculate_control,
              py::arg("map"),
              py::arg("surrounding_vehicles"),
              "Calculate control input for the vehicle");

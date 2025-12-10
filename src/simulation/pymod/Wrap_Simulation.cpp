@@ -39,30 +39,34 @@ void wrap_Simulation(py::module & module)
         .def(py::init<>())
         .def_readwrite("simulation_map", &Simulation::simulation_map)
         .def_readwrite("current_time_s", &Simulation::current_time_s)
-        .def("run", &Simulation::run,
+        .def("run",
+             &Simulation::run,
              py::arg("duration_s"),
              py::arg("delta_t_s"),
              "Run simulation for specified duration with given time step")
-        .def("spawn_traffic", &Simulation::spawn_traffic,
+        .def("spawn_traffic",
+             &Simulation::spawn_traffic,
              py::arg("num_vehicles"),
              "Spawn random traffic vehicles")
-        .def("check_collision", &Simulation::check_collision,
+        .def("check_collision",
+             &Simulation::check_collision,
              "Check if any vehicles are colliding")
-        .def("get_vehicles", [](Simulation & self) {
-            std::vector<Vehicle> vehicle_copies;
-            for (auto* vehicle : self.vehicles)
-            {
-                if (vehicle != nullptr)
-                {
-                    vehicle_copies.push_back(*vehicle);
-                }
-            }
-            return vehicle_copies;
-        }, "Get list of all vehicles in the simulation (returns copies)")
-        .def("add_vehicle_copy", [](Simulation & self, const Vehicle & vehicle) {
-            self.vehicles.push_back(new Vehicle(vehicle));
-        }, py::arg("vehicle"),
-           "Add a copy of a vehicle to the simulation");
+        .def("get_vehicles", [](Simulation & self)
+             {
+                 std::vector<Vehicle> vehicle_copies;
+                 for (auto * vehicle : self.vehicles)
+                 {
+                     if (vehicle != nullptr)
+                     {
+                         vehicle_copies.push_back(*vehicle);
+                     }
+                 }
+                 return vehicle_copies; },
+             "Get list of all vehicles in the simulation (returns copies)")
+        .def("add_vehicle_copy", [](Simulation & self, const Vehicle & vehicle)
+             { self.vehicles.push_back(new Vehicle(vehicle)); },
+             py::arg("vehicle"),
+             "Add a copy of a vehicle to the simulation");
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

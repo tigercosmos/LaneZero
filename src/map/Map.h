@@ -31,17 +31,22 @@
 #include <vector>
 #include <optional>
 
-class Lane {
+class Lane
+{
 public:
     int id;
     double length_meters;
     int speed_limit_kph;
     std::optional<int> adjacent_lane_id;
 
-    Lane(int id, double length, int speed_limit, std::optional<int> adjacent = std::nullopt);
+    Lane(int id,
+         double length,
+         int speed_limit,
+         std::optional<int> adjacent = std::nullopt);
 };
 
-class Map {
+class Map
+{
 public:
     std::vector<Lane> lanes;
 
