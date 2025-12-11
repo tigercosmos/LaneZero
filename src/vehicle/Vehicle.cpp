@@ -26,14 +26,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Vehicle.h"
-#include "Map.h"
+#include <Vehicle.h>
+#include <Map.h>
 
-Vehicle::Vehicle(int id,
+Vehicle::Vehicle(int32_t id,
                  VehicleType type,
                  double position,
                  double velocity,
-                 int lane_id,
+                 int32_t lane_id,
                  double length,
                  double width)
     : id(id)
@@ -55,8 +55,8 @@ void Vehicle::update_kinematics(double delta_t)
 }
 
 void Vehicle::calculate_control(
-    const Map & map,
-    const std::vector<Vehicle *> & surrounding_vehicles)
+    LaneZero::Map const & map,
+    std::vector<Vehicle *> const & surrounding_vehicles)
 {
     // Placeholder for Phase 2 logic
 }

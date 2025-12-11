@@ -30,7 +30,10 @@
 
 #include <vector>
 
+namespace LaneZero
+{
 class Map;
+}
 
 enum class VehicleType
 {
@@ -41,27 +44,27 @@ enum class VehicleType
 class Vehicle
 {
 public:
-    int id;
+    int32_t id;
     VehicleType type;
     double position_s_m;
     double velocity_mps;
     double acceleration_mps2;
-    int current_lane_id;
+    int32_t current_lane_id;
     double length_m;
     double width_m;
 
-    Vehicle(int id,
+    Vehicle(int32_t id,
             VehicleType type,
             double position,
             double velocity,
-            int lane_id,
+            int32_t lane_id,
             double length,
             double width);
 
     void update_kinematics(double delta_t);
 
-    virtual void calculate_control(const Map & map,
-                                   const std::vector<Vehicle *> & surrounding_vehicles);
+    virtual void calculate_control(LaneZero::Map const & map,
+                                   std::vector<Vehicle *> const & surrounding_vehicles);
 
     virtual ~Vehicle() = default;
 };

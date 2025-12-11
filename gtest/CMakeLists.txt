@@ -20,6 +20,7 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/map
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/vehicle
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/simulation
+    ${rapidjson_SOURCE_DIR}/include
 )
 target_link_libraries(tests PRIVATE GTest::gtest_main)
 

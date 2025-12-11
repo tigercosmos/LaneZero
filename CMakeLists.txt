@@ -66,6 +66,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(pybind11)
 
+# Fetch RapidJSON
+FetchContent_Declare(
+    rapidjson
+    GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
+    GIT_TAG master
+)
+set(RAPIDJSON_BUILD_DOC OFF CACHE BOOL "" FORCE)
+set(RAPIDJSON_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(RAPIDJSON_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(rapidjson)
+
 # C++ library sources
 set(LANEZERO_SOURCES
     src/map/Map.cpp
@@ -93,6 +104,7 @@ target_include_directories(_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/map
     ${CMAKE_CURRENT_SOURCE_DIR}/src/vehicle
     ${CMAKE_CURRENT_SOURCE_DIR}/src/simulation
+    ${rapidjson_SOURCE_DIR}/include
 )
 
 if(LANEZERO_USE_QT)

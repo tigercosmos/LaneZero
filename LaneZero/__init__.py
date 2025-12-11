@@ -39,14 +39,26 @@ from . import _core
 # Export core classes
 Vehicle = _core.Vehicle
 VehicleType = _core.VehicleType
+Point = _core.Point
+WidthCoefficients = _core.WidthCoefficients
 Lane = _core.Lane
+LaneSection = _core.LaneSection
+RoadLink = _core.RoadLink
+Road = _core.Road
+MapMeta = _core.MapMeta
 Map = _core.Map
 Simulation = _core.Simulation
 
 __all__ = [
     'Vehicle',
     'VehicleType',
+    'Point',
+    'WidthCoefficients',
     'Lane',
+    'LaneSection',
+    'RoadLink',
+    'Road',
+    'MapMeta',
     'Map',
     'Simulation',
 ]

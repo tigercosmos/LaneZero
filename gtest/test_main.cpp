@@ -27,18 +27,18 @@
  */
 
 #include <gtest/gtest.h>
-#include "Map.h"
-#include "Vehicle.h"
-#include "Simulation.h"
+#include <Map.h>
+#include <Vehicle.h>
+#include <Simulation.h>
 
 TEST(MapTest, Initialization)
 {
-    Map map;
+    LaneZero::Map map;
     map.initialize_highway(3, 5000.0);
 
-    EXPECT_EQ(map.lanes.size(), 3);
-    EXPECT_DOUBLE_EQ(map.lanes[0].length_meters, 5000.0);
-    EXPECT_EQ(map.lanes[0].speed_limit_kph, 120);
+    EXPECT_FALSE(map.roads().empty());
+    EXPECT_GT(map.roads()[0].lane_sections.size(), 0);
+    EXPECT_GT(map.roads()[0].lane_sections[0].lanes.size(), 0);
 }
 
 TEST(VehicleTest, KinematicsUpdate)

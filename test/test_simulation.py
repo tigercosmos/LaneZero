@@ -56,16 +56,19 @@ class TestSimulation:
             num_lanes=3,
             lane_length=2000.0
         )
-        assert len(simulation.simulation_map.lanes) == 3
+        assert len(simulation.simulation_map.roads()) == 1
+        lanes = simulation.simulation_map.roads()[0].lane_sections[0].lanes
+        assert len(lanes) == 3
 
     def test_spawn_traffic(self):
-        """Test spawning traffic vehicles"""
+        """Test spawning vehicles in simulation"""
         simulation = lz.Simulation()
         simulation.simulation_map.initialize_highway(
             num_lanes=3,
             lane_length=2000.0
         )
         simulation.spawn_traffic(num_vehicles=5)
+
         vehicles = simulation.get_vehicles()
         assert len(vehicles) == 5
 

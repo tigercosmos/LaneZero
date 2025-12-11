@@ -69,22 +69,36 @@ void Simulation::run(double duration_s, double delta_t_s)
     }
 }
 
-void Simulation::spawn_traffic(int num_vehicles)
+void Simulation::spawn_traffic(int32_t num_vehicles)
 {
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::uniform_real_distribution<> pos_dist(0.0, 1000.0);
     std::uniform_real_distribution<> vel_dist(20.0, 33.0);
-    std::uniform_int_distribution<> lane_dist(
-        0,
-        static_cast<int>(simulation_map.lanes.size()) - 1);
 
-    for (int i = 0; i < num_vehicles; ++i)
+    int32_t max_lane_id = 0;
+    for (auto const & road : simulation_map.roads())
     {
-        int id = static_cast<int>(vehicles.size());
+        for (auto const & lane_section : road.lane_sections)
+        {
+            for (auto const & lane : lane_section.lanes)
+            {
+                if (lane.lane_id > max_lane_id)
+                {
+                    max_lane_id = lane.lane_id;
+                }
+            }
+        }
+    }
+
+    std::uniform_int_distribution<> lane_dist(0, max_lane_id > 0 ? max_lane_id : 0);
+
+    for (int32_t i = 0; i < num_vehicles; ++i)
+    {
+        int32_t id = static_cast<int32_t>(vehicles.size());
         double position = pos_dist(gen);
         double velocity = vel_dist(gen);
-        int lane_id = lane_dist(gen);
+        int32_t lane_id = lane_dist(gen);
 
         vehicles.push_back(
             new Vehicle(id, VehicleType::Car, position, velocity, lane_id, 4.5, 2.0));
