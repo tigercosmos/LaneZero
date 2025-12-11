@@ -38,6 +38,8 @@ from ._viewer_core import enable
 
 if enable:
     from PySide6.QtGui import QAction
+    from PySide6.QtWidgets import QMenu
+    import shiboken6
 
 __all__ = [
     'controller',
@@ -65,6 +67,16 @@ class _Controller(metaclass=_Singleton):
     def __getattr__(self, name):
         return None if self._rmgr is None else getattr(self._rmgr, name)
 
+    def _wrap_qt_menu(self, qt_object):
+        """Convert a Qt QMenu pointer from C++ to a proper PySide6 QMenu object."""
+        if not enable or qt_object is None:
+            return None
+        try:
+            ptr = shiboken6.getCppPointer(qt_object)[0]
+            return shiboken6.wrapInstance(int(ptr), QMenu)
+        except Exception:
+            return qt_object
+
     def launch(self, name="LaneZero Viewer", size=(1200, 800)):
         from ._viewer_core import RManager
         self._rmgr = RManager.get_instance()
@@ -86,7 +98,9 @@ class _Controller(metaclass=_Singleton):
                 act.setChecked(checked)
             if callable(func):
                 act.triggered.connect(lambda *a: func())
-            menu.addAction(act)
+            menu_wrapped = self._wrap_qt_menu(menu)
+            if menu_wrapped:
+                menu_wrapped.addAction(act)
 
         if sys.platform != 'darwin':
             _add_action(

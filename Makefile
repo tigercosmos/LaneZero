@@ -33,7 +33,11 @@ lint:
 	@echo "Linting Python files..."
 	@flake8 LaneZero/ test/ --max-line-length=79 --exclude=__pycache__
 	@echo "Linting C++ files..."
-	@find src -name "*.cpp" -o -name "*.h" | xargs clang-format -i
+	@if command -v clang-format >/dev/null 2>&1; then \
+		find src -name "*.cpp" -o -name "*.h" | xargs clang-format -i; \
+	else \
+		echo "Warning: clang-format not found, skipping C++ formatting"; \
+	fi
 	@echo "Linting completed!"
 
 help:
