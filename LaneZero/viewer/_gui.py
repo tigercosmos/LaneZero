@@ -68,7 +68,7 @@ class _Controller(metaclass=_Singleton):
         return None if self._rmgr is None else getattr(self._rmgr, name)
 
     def _wrap_qt_menu(self, qt_object):
-        """Convert a Qt QMenu pointer from C++ to a proper PySide6 QMenu object."""
+        """Convert a Qt QMenu pointer from C++ to a proper PySide6 QMenu object."""  # noqa E501
         if not enable or qt_object is None:
             return None
         try:
