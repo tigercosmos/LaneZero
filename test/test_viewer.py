@@ -5,42 +5,47 @@
 Simple test to verify Qt GUI setup
 """
 
-import sys
+import pytest
 
-# Test imports (without PySide6 environment setup)
-print("Testing LaneZero Qt GUI implementation...")
-print("=" * 60)
 
-try:
+def test_viewer_module_import():
+    """Test that the viewer module can be imported."""
     from LaneZero.viewer import enable
-    print("✓ Qt viewer module imported successfully")
-    print("✓ Qt viewer enabled: {enable}")
+    assert enable is not None
 
-    if enable:
-        from LaneZero.viewer import RManager
-        print("✓ RManager class imported")
-        print("✓ mgr singleton available")
 
-        # Test RManager instance
-        rm = RManager.get_instance()
-        print("✓ RManager instance created: {rm}")
+def test_viewer_enabled():
+    """Test if Qt viewer is enabled."""
+    from LaneZero.viewer import enable
 
-        print("\n" + "=" * 60)
-        print("SUCCESS: All Qt GUI components are working!")
-        print("=" * 60)
-        print("\nTo launch the GUI:")
-        print("  build/bin/LaneZeroView")
-        sys.exit(0)
-    else:
-        print("\n" + "=" * 60)
-        print("WARNING: Qt GUI is not enabled")
-        print("Please rebuild with: cmake .. -DLANEZERO_USE_QT=ON")
-        sys.exit(1)
+    if not enable:
+        pytest.skip("Qt GUI is not enabled."
+                    "Rebuild with: cmake .. -DLANEZERO_USE_QT=ON")
 
-except Exception as e:
-    print(f"\n✗ Error: {e}")
-    import traceback
-    traceback.print_exc()
-    sys.exit(1)
+    assert enable is True
+
+
+def test_rmanager_import():
+    """Test that RManager can be imported when Qt is enabled."""
+    from LaneZero.viewer import enable
+
+    if not enable:
+        pytest.skip("Qt GUI is not enabled")
+
+    from LaneZero.viewer import RManager
+    assert RManager is not None
+
+
+def test_rmanager_instance():
+    """Test that RManager instance can be created when Qt is enabled."""
+    from LaneZero.viewer import enable
+
+    if not enable:
+        pytest.skip("Qt GUI is not enabled")
+
+    from LaneZero.viewer import RManager
+
+    rm = RManager.get_instance()
+    assert rm is not None
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

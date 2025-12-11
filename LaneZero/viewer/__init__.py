@@ -34,6 +34,7 @@ LaneZero Qt Viewer Module
 
 from ._viewer_core import (
     enable,
+    RManager,  # noqa F401
 )
 
 if enable:
@@ -41,5 +42,12 @@ if enable:
         controller,  # noqa F401
         launch,   # noqa F401
     )
+
+__all__ = [
+    'enable',
+    'RManager',
+    'controller',
+    'launch',
+]
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

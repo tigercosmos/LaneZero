@@ -39,10 +39,6 @@ try:
 except (ImportError, AttributeError):
     pass
 
-__all__ = [
-    'enable',
-]
-
 
 def _load(symbol_list):
     if enable:
@@ -56,5 +52,10 @@ def _load(symbol_list):
 _load(['RManager', 'mgr'])
 
 del _load
+
+__all__ = [  # noqa: F822
+    'enable',
+    'RManager',
+]
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:
