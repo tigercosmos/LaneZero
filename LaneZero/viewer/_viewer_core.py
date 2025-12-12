@@ -49,7 +49,7 @@ def _load(symbol_list):
             globals()[name] = None
 
 
-_load(['RManager', 'mgr'])
+_load(['RManager'])
 
 del _load
 

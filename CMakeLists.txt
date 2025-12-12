@@ -41,19 +41,21 @@ if(LANEZERO_USE_QT)
         message(STATUS "PySide6 library: ${PYSIDE6_LIBRARY}")
     endif()
     
-    # Find shiboken6 library
-    execute_process(
-        COMMAND ${Python3_EXECUTABLE} -c "import shiboken6; import os; print(os.path.dirname(shiboken6.__file__))"
-        OUTPUT_VARIABLE SHIBOKEN6_PATH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    file(GLOB SHIBOKEN6_LIBRARY_CANDIDATES
-        "${SHIBOKEN6_PATH}/libshiboken6.*.dylib"
-        "${SHIBOKEN6_PATH}/libshiboken6.*.so*"
-    )
-    if(SHIBOKEN6_LIBRARY_CANDIDATES)
-        list(GET SHIBOKEN6_LIBRARY_CANDIDATES 0 SHIBOKEN6_LIBRARY)
-        message(STATUS "shiboken6 library: ${SHIBOKEN6_LIBRARY}")
+    if(UNIX AND NOT APPLE)
+        # Find shiboken6 library
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -c "import shiboken6; import os; print(os.path.dirname(shiboken6.__file__))"
+            OUTPUT_VARIABLE SHIBOKEN6_PATH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        file(GLOB SHIBOKEN6_LIBRARY_CANDIDATES
+            "${SHIBOKEN6_PATH}/libshiboken6.*.dylib"
+            "${SHIBOKEN6_PATH}/libshiboken6.*.so*"
+        )
+        if(SHIBOKEN6_LIBRARY_CANDIDATES)
+            list(GET SHIBOKEN6_LIBRARY_CANDIDATES 0 SHIBOKEN6_LIBRARY)
+            message(STATUS "shiboken6 library: ${SHIBOKEN6_LIBRARY}")
+        endif()
     endif()
 endif()
 
@@ -116,8 +118,10 @@ if(LANEZERO_USE_QT)
         target_link_libraries(_core PRIVATE ${PYSIDE6_LIBRARY})
     endif()
     
-    if(SHIBOKEN6_LIBRARY)
-        target_link_libraries(_core PRIVATE ${SHIBOKEN6_LIBRARY})
+    if(UNIX AND NOT APPLE)
+        if(SHIBOKEN6_LIBRARY)
+            target_link_libraries(_core PRIVATE ${SHIBOKEN6_LIBRARY})
+        endif()
     endif()
 endif()
 

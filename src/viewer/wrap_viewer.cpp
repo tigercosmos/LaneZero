@@ -60,8 +60,6 @@ void wrap_viewer(pybind11::module & mod)
     pybind11::module viewer_mod = mod.def_submodule("viewer", "Qt viewer module");
 
     wrap_RManager(viewer_mod);
-
-    viewer_mod.attr("mgr") = pybind11::cast(&RManager::instance(), pybind11::return_value_policy::reference);
 }
 
 } /* end namespace python */
