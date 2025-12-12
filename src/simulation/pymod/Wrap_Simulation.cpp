@@ -44,6 +44,10 @@ void wrap_Simulation(py::module & module)
              py::arg("duration_s"),
              py::arg("delta_t_s"),
              "Run simulation for specified duration with given time step")
+        .def("step",
+             &Simulation::step,
+             py::arg("delta_t_s"),
+             "Advance simulation by one time step")
         .def("spawn_traffic",
              &Simulation::spawn_traffic,
              py::arg("num_vehicles"),

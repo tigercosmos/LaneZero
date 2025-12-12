@@ -27,6 +27,7 @@
  */
 
 #include <viewer/RManager.hpp>
+#include <viewer/RenderWidget.hpp>
 
 namespace LaneZero
 {
@@ -71,6 +72,9 @@ RManager::~RManager()
 void RManager::setUpWindow()
 {
     m_main_window->resize(1200, 800);
+
+    m_render_widget = new RenderWidget(m_main_window);
+    m_main_window->setCentralWidget(m_render_widget);
 }
 
 void RManager::setUpMenu()
@@ -81,6 +85,32 @@ void RManager::setUpMenu()
     m_simulation_menu = menu_bar->addMenu("&Simulation");
     m_view_menu = menu_bar->addMenu("&View");
     m_window_menu = menu_bar->addMenu("&Window");
+}
+
+void RManager::set_map(Map const & map)
+{
+    m_map_copy = map;
+    if (m_render_widget)
+    {
+        m_render_widget->set_map(&m_map_copy);
+    }
+}
+
+void RManager::set_vehicles(std::vector<Vehicle> const & vehicles)
+{
+    m_vehicles_copy = vehicles;
+    if (m_render_widget)
+    {
+        m_render_widget->set_vehicles(&m_vehicles_copy);
+    }
+}
+
+void RManager::update_view()
+{
+    if (m_render_widget)
+    {
+        m_render_widget->update_view();
+    }
 }
 
 } /* end namespace LaneZero */

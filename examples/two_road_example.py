@@ -34,13 +34,29 @@ Example demonstrating the use of two_road.json map with LaneZero simulation.
 
 This example loads a map with two connected roads (R1 and R2) and simulates
 vehicle traffic traveling through both road segments.
+
+Usage:
+    python two_road_example.py              # Run without viewer
+    python two_road_example.py --viewer     # Run with viewer
 """
 
 import os
+import sys
+import argparse
 import LaneZero as lz
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="LaneZero Two-Road Map Example"
+    )
+    parser.add_argument(
+        '--viewer',
+        action='store_true',
+        help='Enable visualization of the simulation'
+    )
+    args = parser.parse_args()
+
     print("=" * 60)
     print("LaneZero Two-Road Map Example")
     print("=" * 60)
@@ -124,10 +140,26 @@ def main():
     collision_status = 'COLLISION DETECTED' if has_collision else 'No collisions'
     print(f"\n6. Initial collision check: {collision_status}")
 
-    print("\n7. Running simulation for 15 seconds...")
-    duration = 15.0
-    delta_t = 0.1
-    simulation.run(duration_s=duration, delta_t_s=delta_t)
+    if args.viewer:
+        print("\n7. Starting simulation with viewer...")
+        if not lz.viewer.enable:
+            print("   ERROR: Viewer is not available. Build with Qt support.")
+            sys.exit(1)
+
+        viewer = lz.viewer.SimulationViewer(
+            simulation,
+            title="Two-Road Simulation Viewer"
+        )
+        duration = 15.0
+        delta_t = 0.1
+        print(f"   Running simulation for {duration} seconds with dt={delta_t}s")
+        print("   Close the viewer window to stop the simulation.")
+        viewer.run(duration_s=duration, delta_t_s=delta_t)
+    else:
+        print("\n7. Running simulation for 15 seconds...")
+        duration = 15.0
+        delta_t = 0.1
+        simulation.run(duration_s=duration, delta_t_s=delta_t)
 
     final_vehicles = simulation.get_vehicles()
     print(f"\n8. Simulation completed at time: "

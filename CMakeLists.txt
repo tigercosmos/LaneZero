@@ -89,6 +89,7 @@ set(LANEZERO_SOURCES
 # Viewer sources (Qt GUI)
 set(LANEZERO_VIEWER_SOURCES
     src/viewer/RManager.cpp
+    src/viewer/RenderWidget.cpp
     src/viewer/wrap_viewer.cpp
 )
 

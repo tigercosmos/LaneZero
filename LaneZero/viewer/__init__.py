@@ -38,16 +38,22 @@ from ._viewer_core import (
 )
 
 if enable:
-    from ._gui import (  # noqa F401
-        controller,  # noqa F401
-        launch,   # noqa F401
+    from ._gui import (
+        controller,
+        launch,
     )
+    from ._simulation_viewer import (
+        SimulationViewer,
+    )
+else:
+    SimulationViewer = None
 
 __all__ = [
     'enable',
     'RManager',
     'controller',
     'launch',
+    'SimulationViewer',
 ]
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

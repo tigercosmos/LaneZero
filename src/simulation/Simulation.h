@@ -44,6 +44,7 @@ public:
     ~Simulation();
 
     void run(double duration_s, double delta_t_s);
+    void step(double delta_t_s);
     void spawn_traffic(int32_t num_vehicles);
     bool check_collision();
 };

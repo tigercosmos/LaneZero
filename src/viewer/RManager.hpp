@@ -29,6 +29,7 @@
  */
 
 #include <string>
+#include <vector>
 
 #include <QMainWindow>
 #include <QApplication>
@@ -36,8 +37,13 @@
 #include <QMenu>
 #include <QObject>
 
+#include <map/Map.h>
+#include <vehicle/Vehicle.h>
+
 namespace LaneZero
 {
+
+class RenderWidget;
 
 class RManager : public QObject
 {
@@ -70,6 +76,12 @@ public:
 
     void setWindowTitle(std::string const & title) { m_main_window->setWindowTitle(QString::fromStdString(title)); }
 
+    void set_map(Map const & map);
+    void set_vehicles(std::vector<Vehicle> const & vehicles);
+    void update_view();
+
+    RenderWidget * render_widget() { return m_render_widget; }
+
 private:
 
     RManager();
@@ -86,6 +98,11 @@ private:
     QMenu * m_simulation_menu = nullptr;
     QMenu * m_view_menu = nullptr;
     QMenu * m_window_menu = nullptr;
+
+    RenderWidget * m_render_widget = nullptr;
+
+    Map m_map_copy;
+    std::vector<Vehicle> m_vehicles_copy;
 
 }; /* end class RManager */
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.14
 # -*- coding: UTF-8 -*-
 #
 # Copyright (c) 2025, LaneZero Contributors
@@ -29,40 +30,67 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-LaneZero: A traffic simulation library
-
-This package provides Python bindings for the LaneZero C++ library.
+Quick demo showing viewer capabilities.
 """
 
-from . import _core
-from . import viewer
+import os
+import sys
+import LaneZero as lz
 
-# Export core classes
-Vehicle = _core.Vehicle
-VehicleType = _core.VehicleType
-Point = _core.Point
-WidthCoefficients = _core.WidthCoefficients
-Lane = _core.Lane
-LaneSection = _core.LaneSection
-RoadLink = _core.RoadLink
-Road = _core.Road
-MapMeta = _core.MapMeta
-Map = _core.Map
-Simulation = _core.Simulation
 
-__all__ = [
-    'Vehicle',
-    'VehicleType',
-    'Point',
-    'WidthCoefficients',
-    'Lane',
-    'LaneSection',
-    'RoadLink',
-    'Road',
-    'MapMeta',
-    'Map',
-    'Simulation',
-    'viewer',
-]
+def main():
+    if not lz.viewer.enable:
+        print("ERROR: Viewer is not available. Build with Qt support.")
+        sys.exit(1)
+
+    print("=" * 60)
+    print("LaneZero Viewer Quick Demo")
+    print("=" * 60)
+
+    map_path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "data",
+        "map",
+        "two_road.json"
+    )
+    map_path = os.path.abspath(map_path)
+
+    simulation_map = lz.Map()
+    simulation_map.load_from_file(map_path)
+    print(f"\nLoaded map: {map_path}")
+
+    simulation = lz.Simulation()
+    simulation.simulation_map = simulation_map
+
+    vehicle1 = lz.Vehicle(1, lz.VehicleType.Car, 5.0, 10.0, 1, 4.5, 2.0)
+    vehicle1.acceleration_mps2 = 2.0
+
+    vehicle2 = lz.Vehicle(2, lz.VehicleType.Car, 20.0, 12.0, -1, 4.5, 2.0)
+    vehicle2.acceleration_mps2 = 1.5
+
+    vehicle3 = lz.Vehicle(3, lz.VehicleType.Truck, 35.0, 8.0, 1, 12.0, 2.5)
+    vehicle3.acceleration_mps2 = 0.8
+
+    simulation.add_vehicle_copy(vehicle1)
+    simulation.add_vehicle_copy(vehicle2)
+    simulation.add_vehicle_copy(vehicle3)
+
+    print("Added 3 vehicles (2 cars, 1 truck)")
+    print("\nStarting viewer...")
+    print("Watch the vehicles move along the roads!")
+    print("Close the window to exit.")
+
+    viewer = lz.viewer.SimulationViewer(
+        simulation,
+        title="LaneZero Viewer Demo"
+    )
+    viewer.run(duration_s=20.0, delta_t_s=0.1)
+
+    print("\nDemo completed!")
+
+
+if __name__ == '__main__':
+    main()
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

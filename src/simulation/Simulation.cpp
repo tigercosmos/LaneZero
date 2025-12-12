@@ -48,24 +48,28 @@ void Simulation::run(double duration_s, double delta_t_s)
 {
     int num_steps = static_cast<int>(std::ceil(duration_s / delta_t_s));
 
-    for (int step = 0; step < num_steps; ++step)
+    for (int step_index = 0; step_index < num_steps; ++step_index)
     {
-        current_time_s += delta_t_s;
+        step(delta_t_s);
+    }
+}
 
-        for (auto * vehicle : vehicles)
-        {
-            vehicle->calculate_control(simulation_map, vehicles);
-        }
+void Simulation::step(double delta_t_s)
+{
+    current_time_s += delta_t_s;
 
-        for (auto * vehicle : vehicles)
-        {
-            vehicle->update_kinematics(delta_t_s);
-        }
+    for (auto * vehicle : vehicles)
+    {
+        vehicle->calculate_control(simulation_map, vehicles);
+    }
 
-        if (check_collision())
-        {
-            // Handle collision
-        }
+    for (auto * vehicle : vehicles)
+    {
+        vehicle->update_kinematics(delta_t_s);
+    }
+
+    if (check_collision())
+    {
     }
 }
 

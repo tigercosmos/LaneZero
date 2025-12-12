@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * Copyright (c) 2025, LaneZero Contributors
  *
@@ -26,46 +28,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+#include <memory>
+#include <vector>
 
-#include <viewer/wrap_viewer.hpp>
-#include <viewer/viewer.hpp>
+#include <QWidget>
+#include <QPainter>
+
+#include <map/Map.h>
+#include <vehicle/Vehicle.h>
 
 namespace LaneZero
 {
 
-namespace python
+class RenderWidget : public QWidget
 {
+    Q_OBJECT
 
-void wrap_RManager(pybind11::module & mod)
-{
-    pybind11::class_<RManager>(mod, "RManager")
-        .def_static("get_instance", &RManager::instance, pybind11::return_value_policy::reference)
-        .def("set_up", &RManager::setUp, pybind11::return_value_policy::reference)
-        .def("exec", &RManager::exec)
-        .def("show", &RManager::show)
-        .def("quit", &RManager::quit)
-        .def("resize", &RManager::resize, pybind11::arg("w"), pybind11::arg("h"))
-        .def("set_window_title", &RManager::setWindowTitle, pybind11::arg("title"))
-        .def("set_map", &RManager::set_map, pybind11::arg("map"))
-        .def("set_vehicles", &RManager::set_vehicles, pybind11::arg("vehicles"))
-        .def("update_view", &RManager::update_view)
-        .def_property_readonly("main_window", &RManager::mainWindow)
-        .def_property_readonly("file_menu", &RManager::fileMenu)
-        .def_property_readonly("simulation_menu", &RManager::simulationMenu)
-        .def_property_readonly("view_menu", &RManager::viewMenu)
-        .def_property_readonly("window_menu", &RManager::windowMenu);
-}
+public:
 
-void wrap_viewer(pybind11::module & mod)
-{
-    pybind11::module viewer_mod = mod.def_submodule("viewer", "Qt viewer module");
+    explicit RenderWidget(QWidget * parent = nullptr);
+    ~RenderWidget() override = default;
 
-    wrap_RManager(viewer_mod);
-}
+    void set_map(Map const * map_ptr);
+    void set_vehicles(std::vector<Vehicle> const * vehicles_ptr);
+    void update_view();
 
-} /* end namespace python */
+protected:
+
+    void paintEvent(QPaintEvent * event) override;
+
+private:
+
+    void render_map(QPainter & painter);
+    void render_vehicles(QPainter & painter);
+    void render_road(QPainter & painter, Road const & road);
+    void render_lane_boundaries(QPainter & painter, Road const & road);
+    void render_vehicle_box(QPainter & painter, Vehicle const & vehicle, Road const & road);
+
+    std::pair<double, double> calculate_lane_offset(Road const & road, int32_t lane_id, double position_s);
+    std::pair<double, double> interpolate_position(std::vector<Point> const & reference_line, double position_s, double length);
+
+    Map const * m_map = nullptr;
+    std::vector<Vehicle> const * m_vehicles = nullptr;
+
+    double m_scale = 10.0;
+    double m_offset_x = 100.0;
+    double m_offset_y = 400.0;
+
+}; /* end class RenderWidget */
 
 } /* end namespace LaneZero */
 
