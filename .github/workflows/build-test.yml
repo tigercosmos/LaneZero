@@ -95,6 +95,11 @@ jobs:
           python3 -m pip install -e .
           python3 -m pytest test/ -v --ignore=test/test_viewer.py
 
+      - name: Test examples without Qt
+        run: |
+          PYTHONPATH=. python3 examples/basic_simulation.py
+          PYTHONPATH=. python3 examples/two_road_example.py
+
       - name: Build and test with Qt ON
         run: |
           rm -rf build
@@ -183,6 +188,11 @@ jobs:
           cp build/_core*.so LaneZero/ 2>/dev/null || cp build/_core*.dylib LaneZero/ 2>/dev/null || true
           python3 -m pip install -e .
           python3 -m pytest test/ -v --ignore=test/test_viewer.py
+
+      - name: Test examples without Qt
+        run: |
+          PYTHONPATH=. python3 examples/basic_simulation.py
+          PYTHONPATH=. python3 examples/two_road_example.py
 
       - name: Build and test with Qt ON
         run: |
