@@ -50,17 +50,14 @@ def main():
         num_lanes=3,
         lane_length=2000.0
     )
-    num_lanes = len(simulation.simulation_map.lanes)
-    print(f"2. Initialized highway with {num_lanes} lanes")
+    lanes = simulation.simulation_map.roads()[0].lane_sections[0].lanes
+    print(f"2. Initialized highway with {len(lanes)} lanes")
 
     # Display lane information
-    for lane in simulation.simulation_map.lanes:
-        if lane.adjacent_lane_id is not None:
-            adjacent_info = f"adjacent to lane {lane.adjacent_lane_id}"
-        else:
-            adjacent_info = "no adjacent lane"
-        print(f"   Lane {lane.id}: {lane.length_meters}m, "
-              f"speed limit {lane.speed_limit_kph} kph, {adjacent_info}")
+    for lane in lanes:
+        speed_limit_info = f"{lane.speed_limit:.2f} m/s" if lane.speed_limit else "N/A"
+        print(f"   Lane {lane.lane_id}: type={lane.type}, "
+              f"speed limit={speed_limit_info}")
 
     # Create some vehicles manually
     print("\n3. Creating vehicles:")
