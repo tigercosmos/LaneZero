@@ -52,10 +52,7 @@ class TestSimulation:
         """Test accessing simulation map"""
         simulation = lz.Simulation()
         assert simulation.simulation_map is not None
-        simulation.simulation_map.initialize_highway(
-            num_lanes=3,
-            lane_length=2000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=3, lane_length=2000.0)
         assert len(simulation.simulation_map.roads()) == 1
         lanes = simulation.simulation_map.roads()[0].lane_sections[0].lanes
         assert len(lanes) == 3
@@ -63,10 +60,7 @@ class TestSimulation:
     def test_spawn_traffic(self):
         """Test spawning vehicles in simulation"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=3,
-            lane_length=2000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=3, lane_length=2000.0)
         simulation.spawn_traffic(num_vehicles=5)
 
         vehicles = simulation.get_vehicles()
@@ -75,10 +69,7 @@ class TestSimulation:
     def test_spawned_vehicle_properties(self):
         """Test properties of spawned vehicles"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=3,
-            lane_length=2000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=3, lane_length=2000.0)
         simulation.spawn_traffic(num_vehicles=3)
         vehicles = simulation.get_vehicles()
 
@@ -91,10 +82,7 @@ class TestSimulation:
     def test_check_collision_no_collision(self):
         """Test collision detection when no collision occurs"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=2,
-            lane_length=2000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=2, lane_length=2000.0)
 
         # Create two vehicles far apart
         vehicle1 = lz.Vehicle(
@@ -104,7 +92,7 @@ class TestSimulation:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle2 = lz.Vehicle(
             id=2,
@@ -113,7 +101,7 @@ class TestSimulation:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
 
         simulation.add_vehicle_copy(vehicle1)
@@ -124,10 +112,7 @@ class TestSimulation:
     def test_check_collision_with_collision(self):
         """Test collision detection when collision occurs"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=2,
-            lane_length=2000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=2, lane_length=2000.0)
 
         # Create two vehicles very close together
         vehicle1 = lz.Vehicle(
@@ -137,7 +122,7 @@ class TestSimulation:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle2 = lz.Vehicle(
             id=2,
@@ -146,7 +131,7 @@ class TestSimulation:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
 
         simulation.add_vehicle_copy(vehicle1)
@@ -157,10 +142,7 @@ class TestSimulation:
     def test_check_collision_different_lanes(self):
         """Test that vehicles in different lanes don't collide"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=2,
-            lane_length=2000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=2, lane_length=2000.0)
 
         # Create two vehicles at same position but different lanes
         vehicle1 = lz.Vehicle(
@@ -170,7 +152,7 @@ class TestSimulation:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle2 = lz.Vehicle(
             id=2,
@@ -179,7 +161,7 @@ class TestSimulation:
             velocity=25.0,
             lane_id=1,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
 
         simulation.add_vehicle_copy(vehicle1)
@@ -190,10 +172,7 @@ class TestSimulation:
     def test_run_simulation(self):
         """Test running a simulation"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=2,
-            lane_length=5000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=2, lane_length=5000.0)
 
         # Create a vehicle with constant velocity
         vehicle = lz.Vehicle(
@@ -203,7 +182,7 @@ class TestSimulation:
             velocity=10.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle.acceleration_mps2 = 0.0
 
@@ -220,10 +199,7 @@ class TestSimulation:
     def test_run_simulation_time_update(self):
         """Test that simulation time is updated correctly"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=1,
-            lane_length=5000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=1, lane_length=5000.0)
 
         assert simulation.current_time_s == 0.0
         simulation.run(duration_s=10.0, delta_t_s=0.5)
@@ -233,10 +209,7 @@ class TestSimulation:
     def test_multiple_vehicles_simulation(self):
         """Test simulation with multiple vehicles"""
         simulation = lz.Simulation()
-        simulation.simulation_map.initialize_highway(
-            num_lanes=3,
-            lane_length=5000.0
-        )
+        simulation.simulation_map.initialize_highway(num_lanes=3, lane_length=5000.0)
 
         # Add multiple vehicles
         for index in range(5):
@@ -247,7 +220,7 @@ class TestSimulation:
                 velocity=20.0,
                 lane_id=index % 3,
                 length=4.5,
-                width=2.0
+                width=2.0,
             )
             vehicle.acceleration_mps2 = 0.0
             simulation.add_vehicle_copy(vehicle)

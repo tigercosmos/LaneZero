@@ -48,11 +48,7 @@ def main():
     print("=" * 60)
 
     map_path = os.path.join(
-        os.path.dirname(__file__),
-        "..",
-        "data",
-        "map",
-        "two_road.json"
+        os.path.dirname(__file__), "..", "data", "map", "two_road.json"
     )
     map_path = os.path.abspath(map_path)
 
@@ -81,16 +77,13 @@ def main():
     print("Watch the vehicles move along the roads!")
     print("Close the window to exit.")
 
-    viewer = lz.viewer.SimulationViewer(
-        simulation,
-        title="LaneZero Viewer Demo"
-    )
+    viewer = lz.viewer.SimulationViewer(simulation, title="LaneZero Viewer Demo")
     viewer.run(duration_s=20.0, delta_t_s=0.1)
 
     print("\nDemo completed!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

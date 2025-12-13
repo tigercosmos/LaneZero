@@ -84,6 +84,11 @@ set(LANEZERO_SOURCES
     src/map/Map.cpp
     src/vehicle/Vehicle.cpp
     src/simulation/Simulation.cpp
+    src/scenario/Scenario.cpp
+    src/planner/BehaviorPlanner.cpp
+    src/planner/MotionPlanner.cpp
+    src/planner/ControlPlanner.cpp
+    src/planner/PlanningOrchestrator.cpp
 )
 
 # Viewer sources (Qt GUI)
@@ -100,6 +105,7 @@ pybind11_add_module(_core
     src/vehicle/pymod/wrap_Vehicle.cpp
     src/map/pymod/wrap_Map.cpp
     src/simulation/pymod/Wrap_Simulation.cpp
+    src/simulation/pymod/Wrap_WorldState.cpp
 )
 
 target_include_directories(_core PRIVATE
@@ -107,6 +113,8 @@ target_include_directories(_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/map
     ${CMAKE_CURRENT_SOURCE_DIR}/src/vehicle
     ${CMAKE_CURRENT_SOURCE_DIR}/src/simulation
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scenario
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/planner
     ${rapidjson_SOURCE_DIR}/include
 )
 

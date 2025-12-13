@@ -31,28 +31,28 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='LaneZero',
-    version='1.0.0',
-    description='A traffic simulation library',
+    name="LaneZero",
+    version="1.0.0",
+    description="A traffic simulation library",
     packages=find_packages(),
-    python_requires='>=3.8',
+    python_requires=">=3.8",
     install_requires=[
-        'pytest>=7.0',
+        "pytest>=7.0",
     ],
     entry_points={
-        'console_scripts': [
-            'LaneZeroView=LaneZero.viewer._gui:launch',
+        "console_scripts": [
+            "LaneZeroView=LaneZero.viewer._gui:launch",
         ],
     },
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
 )
 

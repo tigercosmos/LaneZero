@@ -47,13 +47,11 @@ import LaneZero as lz
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="LaneZero Two-Road Map Example"
-    )
+    parser = argparse.ArgumentParser(description="LaneZero Two-Road Map Example")
     parser.add_argument(
-        '--viewer',
-        action='store_true',
-        help='Enable visualization of the simulation'
+        "--viewer",
+        action="store_true",
+        help="Enable visualization of the simulation",
     )
     args = parser.parse_args()
 
@@ -62,11 +60,7 @@ def main():
     print("=" * 60)
 
     map_path = os.path.join(
-        os.path.dirname(__file__),
-        "..",
-        "data",
-        "map",
-        "two_road.json"
+        os.path.dirname(__file__), "..", "data", "map", "two_road.json"
     )
     map_path = os.path.abspath(map_path)
     print(f"\n1. Loading map from: {map_path}")
@@ -82,8 +76,10 @@ def main():
     roads = simulation_map.roads()
     print(f"\n2. Map contains {len(roads)} roads:")
     for road in roads:
-        print(f"   Road {road.id}: length={road.length:.1f}m, "
-              f"speed_limit={road.speed_limit if road.speed_limit else 'N/A'}")
+        print(
+            f"   Road {road.id}: length={road.length:.1f}m, "
+            f"speed_limit={road.speed_limit if road.speed_limit else 'N/A'}"
+        )
 
     simulation = lz.Simulation()
     simulation.simulation_map = simulation_map
@@ -97,11 +93,13 @@ def main():
         velocity=10.0,
         lane_id=1,
         length=4.5,
-        width=2.0
+        width=2.0,
     )
     vehicle1.acceleration_mps2 = 2.0
-    print(f"   Vehicle 1: Car at position={vehicle1.position_s_m:.1f}m, "
-          f"velocity={vehicle1.velocity_mps:.1f}m/s")
+    print(
+        f"   Vehicle 1: Car at position={vehicle1.position_s_m:.1f}m, "
+        f"velocity={vehicle1.velocity_mps:.1f}m/s"
+    )
 
     vehicle2 = lz.Vehicle(
         id=2,
@@ -110,11 +108,13 @@ def main():
         velocity=12.0,
         lane_id=-1,
         length=4.5,
-        width=2.0
+        width=2.0,
     )
     vehicle2.acceleration_mps2 = 1.5
-    print(f"   Vehicle 2: Car at position={vehicle2.position_s_m:.1f}m, "
-          f"velocity={vehicle2.velocity_mps:.1f}m/s")
+    print(
+        f"   Vehicle 2: Car at position={vehicle2.position_s_m:.1f}m, "
+        f"velocity={vehicle2.velocity_mps:.1f}m/s"
+    )
 
     vehicle3 = lz.Vehicle(
         id=3,
@@ -123,11 +123,13 @@ def main():
         velocity=8.0,
         lane_id=1,
         length=12.0,
-        width=2.5
+        width=2.5,
     )
     vehicle3.acceleration_mps2 = 0.8
-    print(f"   Vehicle 3: Truck at position={vehicle3.position_s_m:.1f}m, "
-          f"velocity={vehicle3.velocity_mps:.1f}m/s")
+    print(
+        f"   Vehicle 3: Truck at position={vehicle3.position_s_m:.1f}m, "
+        f"velocity={vehicle3.velocity_mps:.1f}m/s"
+    )
 
     simulation.add_vehicle_copy(vehicle1)
     simulation.add_vehicle_copy(vehicle2)
@@ -137,7 +139,7 @@ def main():
     print(f"\n5. Added {len(initial_vehicles)} vehicles to simulation")
 
     has_collision = simulation.check_collision()
-    collision_status = 'COLLISION DETECTED' if has_collision else 'No collisions'
+    collision_status = "COLLISION DETECTED" if has_collision else "No collisions"
     print(f"\n6. Initial collision check: {collision_status}")
 
     duration = 15.0
@@ -149,8 +151,7 @@ def main():
             sys.exit(1)
 
         viewer = lz.viewer.SimulationViewer(
-            simulation,
-            title="Two-Road Simulation Viewer"
+            simulation, title="Two-Road Simulation Viewer"
         )
 
         print(f"   Running simulation for {duration} seconds with dt={delta_t}s")
@@ -161,21 +162,20 @@ def main():
         simulation.run(duration_s=duration, delta_t_s=delta_t)
 
     final_vehicles = simulation.get_vehicles()
-    print(f"\n8. Simulation completed at time: "
-          f"{simulation.current_time_s:.2f}s")
+    print(f"\n8. Simulation completed at time: {simulation.current_time_s:.2f}s")
 
     print("\n9. Final vehicle states:")
     for vehicle in final_vehicles:
         vehicle_type = "Car" if vehicle.type == lz.VehicleType.Car else "Truck"
-        print(f"   Vehicle {vehicle.id}: {vehicle_type}, "
-              f"position={vehicle.position_s_m:.1f}m, "
-              f"velocity={vehicle.velocity_mps:.1f}m/s, "
-              f"lane={vehicle.current_lane_id}")
+        print(
+            f"   Vehicle {vehicle.id}: {vehicle_type}, "
+            f"position={vehicle.position_s_m:.1f}m, "
+            f"velocity={vehicle.velocity_mps:.1f}m/s, "
+            f"lane={vehicle.current_lane_id}"
+        )
 
     final_collision = simulation.check_collision()
-    final_status = (
-        'COLLISION DETECTED' if final_collision else 'No collisions'
-    )
+    final_status = "COLLISION DETECTED" if final_collision else "No collisions"
     print(f"\n10. Final collision check: {final_status}")
 
     print("\n" + "=" * 60)
@@ -183,7 +183,7 @@ def main():
     print("=" * 60)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

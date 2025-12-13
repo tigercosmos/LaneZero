@@ -27,34 +27,34 @@
  */
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+#include "WorldState.h"
 
 namespace py = pybind11;
 
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
-void wrap_WorldState(py::module & module);
-
-namespace LaneZero
+void wrap_WorldState(py::module & module)
 {
-namespace python
-{
-void wrap_viewer(py::module & module);
-} /* end namespace python */
-} /* end namespace LaneZero */
-
-PYBIND11_MODULE(_core, module)
-{
-    module.doc() = "LaneZero: A traffic simulation library";
-
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_WorldState(module);
-    wrap_Simulation(module);
-
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
+    py::class_<LaneZero::WorldState>(module, "WorldState")
+        .def(py::init<>())
+        .def_readwrite("world_map", &LaneZero::WorldState::world_map)
+        .def_readwrite("current_time_s", &LaneZero::WorldState::current_time_s)
+        .def_property("ego_vehicle", [](LaneZero::WorldState & self) -> Vehicle *
+                      { return self.ego_vehicle.get(); },
+                      [](LaneZero::WorldState & self, Vehicle const & vehicle)
+                      { self.ego_vehicle = std::make_unique<Vehicle>(vehicle); })
+        .def("get_other_vehicles", [](LaneZero::WorldState & self)
+             {
+                 std::vector<Vehicle> vehicle_copies;
+                 for (auto const & vehicle_ptr : self.vehicles)
+                 {
+                     if (vehicle_ptr)
+                     {
+                         vehicle_copies.push_back(*vehicle_ptr);
+                     }
+                 }
+                 return vehicle_copies; },
+             "Get list of all other vehicles (returns copies)");
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

@@ -51,7 +51,7 @@ def validate_map_file(map_file_path):
         tuple: (bool, str) - (is_valid, error_message)
     """
     try:
-        with open(map_file_path, 'r') as file:
+        with open(map_file_path, "r") as file:
             map_data = json.load(file)
 
         validate(instance=map_data, schema=SIMPLE_OPENDRIVE_SCHEMA)
@@ -84,7 +84,7 @@ def validate_all_maps(map_directory):
         print(f"Error: '{map_directory}' is not a directory")
         return 1
 
-    map_files = sorted(map_dir_path.glob('*.json'))
+    map_files = sorted(map_dir_path.glob("*.json"))
 
     if not map_files:
         print(f"No JSON files found in '{map_directory}'")
@@ -103,11 +103,11 @@ def validate_all_maps(map_directory):
             print(f"  {error_message}\n")
             failures += 1
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Total: {len(map_files)} file(s)")
     print(f"Valid: {len(map_files) - failures}")
     print(f"Invalid: {failures}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     return failures
 

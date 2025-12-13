@@ -35,6 +35,7 @@ Import C++ viewer implementation.
 enable = False
 try:
     from LaneZero._core import viewer as _viewer_impl
+
     enable = True
 except (ImportError, AttributeError):
     pass
@@ -49,13 +50,13 @@ def _load(symbol_list):
             globals()[name] = None
 
 
-_load(['RManager'])
+_load(["RManager"])
 
 del _load
 
 __all__ = [  # noqa: F822
-    'enable',
-    'RManager',
+    "enable",
+    "RManager",
 ]
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

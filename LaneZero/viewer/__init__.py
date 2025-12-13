@@ -49,11 +49,11 @@ else:
     SimulationViewer = None
 
 __all__ = [
-    'enable',
-    'RManager',
-    'controller',
-    'launch',
-    'SimulationViewer',
+    "enable",
+    "RManager",
+    "controller",
+    "launch",
+    "SimulationViewer",
 ]
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

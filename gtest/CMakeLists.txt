@@ -13,6 +13,11 @@ add_executable(tests
     ../src/map/Map.cpp
     ../src/vehicle/Vehicle.cpp
     ../src/simulation/Simulation.cpp
+    ../src/scenario/Scenario.cpp
+    ../src/planner/BehaviorPlanner.cpp
+    ../src/planner/MotionPlanner.cpp
+    ../src/planner/ControlPlanner.cpp
+    ../src/planner/PlanningOrchestrator.cpp
 )
 
 target_include_directories(tests PRIVATE
@@ -20,6 +25,8 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/map
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/vehicle
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/simulation
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/scenario
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/planner
     ${rapidjson_SOURCE_DIR}/include
 )
 target_link_libraries(tests PRIVATE GTest::gtest_main)

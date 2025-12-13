@@ -32,6 +32,8 @@
 
 Simulation::Simulation()
     : current_time_s(0.0)
+    , m_planner(std::make_unique<LaneZero::PlanningOrchestrator>())
+    , m_scenario(std::make_unique<LaneZero::LaneKeepScenario>())
 {
 }
 
@@ -58,9 +60,20 @@ void Simulation::step(double delta_t_s)
 {
     current_time_s += delta_t_s;
 
+    if (m_ego_vehicle && m_planner && m_scenario)
+    {
+        LaneZero::WorldState world = get_world_state();
+        LaneZero::Goal goal = m_scenario->update_goal(world);
+        LaneZero::PlanResult result = m_planner->plan(world, goal, delta_t_s);
+        apply(result);
+    }
+
     for (auto * vehicle : vehicles)
     {
-        vehicle->calculate_control(simulation_map, vehicles);
+        if (vehicle != m_ego_vehicle)
+        {
+            vehicle->calculate_control(simulation_map, vehicles);
+        }
     }
 
     for (auto * vehicle : vehicles)
@@ -130,3 +143,57 @@ bool Simulation::check_collision()
     }
     return false;
 }
+
+LaneZero::WorldState Simulation::get_world_state() const
+{
+    LaneZero::WorldState world_state;
+    world_state.world_map = simulation_map;
+    world_state.current_time_s = current_time_s;
+
+    if (m_ego_vehicle)
+    {
+        world_state.ego_vehicle = std::make_unique<Vehicle>(
+            m_ego_vehicle->id,
+            m_ego_vehicle->type,
+            m_ego_vehicle->position_s_m,
+            m_ego_vehicle->velocity_mps,
+            m_ego_vehicle->current_lane_id,
+            m_ego_vehicle->length_m,
+            m_ego_vehicle->width_m);
+        world_state.ego_vehicle->acceleration_mps2 = m_ego_vehicle->acceleration_mps2;
+    }
+
+    for (auto const * vehicle : vehicles)
+    {
+        if (vehicle != m_ego_vehicle)
+        {
+            auto vehicle_copy = std::make_unique<Vehicle>(
+                vehicle->id,
+                vehicle->type,
+                vehicle->position_s_m,
+                vehicle->velocity_mps,
+                vehicle->current_lane_id,
+                vehicle->length_m,
+                vehicle->width_m);
+            vehicle_copy->acceleration_mps2 = vehicle->acceleration_mps2;
+            world_state.vehicles.push_back(std::move(vehicle_copy));
+        }
+    }
+
+    return world_state;
+}
+
+void Simulation::apply(LaneZero::PlanResult const & result)
+{
+    if (m_ego_vehicle)
+    {
+        m_ego_vehicle->acceleration_mps2 = result.acceleration_mps2;
+    }
+}
+
+void Simulation::set_ego_vehicle(Vehicle * vehicle)
+{
+    m_ego_vehicle = vehicle;
+}
+
+// vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

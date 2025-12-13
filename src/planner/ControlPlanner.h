@@ -26,35 +26,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pybind11/pybind11.h>
-
-namespace py = pybind11;
-
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
-void wrap_WorldState(py::module & module);
+#pragma once
 
 namespace LaneZero
 {
-namespace python
+
+class Trajectory;
+
+struct ControlCommand
 {
-void wrap_viewer(py::module & module);
-} /* end namespace python */
-} /* end namespace LaneZero */
+    double acceleration_mps2 = 0.0;
+    double steering_angle_rad = 0.0;
+};
 
-PYBIND11_MODULE(_core, module)
+class ControlPlanner
 {
-    module.doc() = "LaneZero: A traffic simulation library";
+public:
+    ControlPlanner() = default;
+    ~ControlPlanner() = default;
 
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_WorldState(module);
-    wrap_Simulation(module);
+    ControlCommand plan(Trajectory const & trajectory, double delta_t_s);
+};
 
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
-}
+} // namespace LaneZero
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

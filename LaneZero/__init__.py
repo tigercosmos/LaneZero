@@ -51,18 +51,18 @@ Map = _core.Map
 Simulation = _core.Simulation
 
 __all__ = [
-    'Vehicle',
-    'VehicleType',
-    'Point',
-    'WidthCoefficients',
-    'Lane',
-    'LaneSection',
-    'RoadLink',
-    'Road',
-    'MapMeta',
-    'Map',
-    'Simulation',
-    'viewer',
+    "Vehicle",
+    "VehicleType",
+    "Point",
+    "WidthCoefficients",
+    "Lane",
+    "LaneSection",
+    "RoadLink",
+    "Road",
+    "MapMeta",
+    "Map",
+    "Simulation",
+    "viewer",
 ]
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

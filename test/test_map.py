@@ -235,8 +235,7 @@ class TestMap:
         highway_map = lz.Map()
         highway_map.initialize_highway(num_lanes=2, lane_length=2000.0)
 
-        with tempfile.NamedTemporaryFile(mode='w',
-                                         suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             temp_file = f.name
 
         try:

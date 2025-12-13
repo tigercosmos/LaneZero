@@ -67,10 +67,18 @@ void wrap_Simulation(py::module & module)
                  }
                  return vehicle_copies; },
              "Get list of all vehicles in the simulation (returns copies)")
-        .def("add_vehicle_copy", [](Simulation & self, const Vehicle & vehicle)
+        .def("add_vehicle_copy", [](Simulation & self, Vehicle const & vehicle)
              { self.vehicles.push_back(new Vehicle(vehicle)); },
              py::arg("vehicle"),
-             "Add a copy of a vehicle to the simulation");
+             "Add a copy of a vehicle to the simulation")
+        .def("get_world_state", &Simulation::get_world_state, "Get current world state from simulation")
+        .def("set_ego_vehicle", [](Simulation & self, Vehicle const & vehicle)
+             {
+                 Vehicle * new_vehicle = new Vehicle(vehicle);
+                 self.vehicles.push_back(new_vehicle);
+                 self.set_ego_vehicle(new_vehicle); },
+             py::arg("vehicle"),
+             "Set ego vehicle for planning-based simulation");
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

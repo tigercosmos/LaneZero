@@ -26,35 +26,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pybind11/pybind11.h>
-
-namespace py = pybind11;
-
-void wrap_Vehicle(py::module & module);
-void wrap_Map(py::module & module);
-void wrap_Simulation(py::module & module);
-void wrap_WorldState(py::module & module);
+#include "BehaviorPlanner.h"
+#include "WorldState.h"
+#include "Goal.h"
 
 namespace LaneZero
 {
-namespace python
+
+BehaviorDecision BehaviorPlanner::plan(WorldState const & world_state, Goal const & goal)
 {
-void wrap_viewer(py::module & module);
-} /* end namespace python */
-} /* end namespace LaneZero */
-
-PYBIND11_MODULE(_core, module)
-{
-    module.doc() = "LaneZero: A traffic simulation library";
-
-    wrap_Vehicle(module);
-    wrap_Map(module);
-    wrap_WorldState(module);
-    wrap_Simulation(module);
-
-#ifdef LANEZERO_USE_QT
-    LaneZero::python::wrap_viewer(module);
-#endif
+    BehaviorDecision decision;
+    decision.target_lane_id = goal.target_lane_id;
+    decision.target_speed_mps = goal.desired_speed_mps;
+    return decision;
 }
+
+} // namespace LaneZero
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

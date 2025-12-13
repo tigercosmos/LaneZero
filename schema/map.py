@@ -51,18 +51,23 @@ SIMPLE_OPENDRIVE_SCHEMA = {
                             "type": "object",
                             "properties": {
                                 "distance": {"type": "string"},
-                                "angle": {"type": "string"}
-                            }
-                        }
+                                "angle": {"type": "string"},
+                            },
+                        },
                     },
-                    "additionalProperties": True
+                    "additionalProperties": True,
                 },
                 "roads": {
                     "type": "array",
                     "minItems": 1,
                     "items": {
                         "type": "object",
-                        "required": ["id", "length", "reference_line", "lane_sections"],
+                        "required": [
+                            "id",
+                            "length",
+                            "reference_line",
+                            "lane_sections",
+                        ],
                         "properties": {
                             "id": {"type": "string"},
                             "length": {"type": "number", "exclusiveMinimum": 0},
@@ -75,10 +80,10 @@ SIMPLE_OPENDRIVE_SCHEMA = {
                                     "properties": {
                                         "x": {"type": "number"},
                                         "y": {"type": "number"},
-                                        "z": {"type": "number"}
+                                        "z": {"type": "number"},
                                     },
-                                    "additionalProperties": False
-                                }
+                                    "additionalProperties": False,
+                                },
                             },
                             "successor": {
                                 "type": "object",
@@ -87,10 +92,10 @@ SIMPLE_OPENDRIVE_SCHEMA = {
                                     "road_id": {"type": "string"},
                                     "contact_point": {
                                         "type": "string",
-                                        "enum": ["start", "end"]
-                                    }
+                                        "enum": ["start", "end"],
+                                    },
                                 },
-                                "additionalProperties": False
+                                "additionalProperties": False,
                             },
                             "predecessor": {
                                 "type": "object",
@@ -99,10 +104,10 @@ SIMPLE_OPENDRIVE_SCHEMA = {
                                     "road_id": {"type": "string"},
                                     "contact_point": {
                                         "type": "string",
-                                        "enum": ["start", "end"]
-                                    }
+                                        "enum": ["start", "end"],
+                                    },
                                 },
-                                "additionalProperties": False
+                                "additionalProperties": False,
                             },
                             "speed_limit": {"type": "number", "minimum": 0},
                             "lane_sections": {
@@ -112,8 +117,14 @@ SIMPLE_OPENDRIVE_SCHEMA = {
                                     "type": "object",
                                     "required": ["s_start", "s_end", "lanes"],
                                     "properties": {
-                                        "s_start": {"type": "number", "minimum": 0},
-                                        "s_end": {"type": "number", "exclusiveMinimum": 0},
+                                        "s_start": {
+                                            "type": "number",
+                                            "minimum": 0,
+                                        },
+                                        "s_end": {
+                                            "type": "number",
+                                            "exclusiveMinimum": 0,
+                                        },
                                         "lanes": {
                                             "type": "array",
                                             "minItems": 1,
@@ -125,49 +136,70 @@ SIMPLE_OPENDRIVE_SCHEMA = {
                                                     "type": {
                                                         "type": "string",
                                                         "enum": [
-                                                            "center", "driving", "shoulder",
-                                                            "sidewalk", "bikelane", "parking",
-                                                            "divider", "reserved"
-                                                        ]
+                                                            "center",
+                                                            "driving",
+                                                            "shoulder",
+                                                            "sidewalk",
+                                                            "bikelane",
+                                                            "parking",
+                                                            "divider",
+                                                            "reserved",
+                                                        ],
                                                     },
                                                     "side": {
                                                         "type": "string",
-                                                        "enum": ["left", "right", "center"]
+                                                        "enum": [
+                                                            "left",
+                                                            "right",
+                                                            "center",
+                                                        ],
                                                     },
                                                     "level": {"type": "boolean"},
-                                                    "speed_limit": {"type": "number", "minimum": 0},
+                                                    "speed_limit": {
+                                                        "type": "number",
+                                                        "minimum": 0,
+                                                    },
                                                     "width": {
                                                         "type": "array",
                                                         "minItems": 1,
                                                         "items": {
                                                             "type": "object",
-                                                            "required": ["s_offset", "a"],
+                                                            "required": [
+                                                                "s_offset",
+                                                                "a",
+                                                            ],
                                                             "properties": {
-                                                                "s_offset": {"type": "number", "minimum": 0},
+                                                                "s_offset": {
+                                                                    "type": "number",
+                                                                    "minimum": 0,
+                                                                },
                                                                 "a": {"type": "number"},
                                                                 "b": {"type": "number"},
                                                                 "c": {"type": "number"},
                                                                 "d": {"type": "number"},
-                                                                "valid_length": {"type": "number", "minimum": 0}
+                                                                "valid_length": {
+                                                                    "type": "number",
+                                                                    "minimum": 0,
+                                                                },
                                                             },
-                                                            "additionalProperties": False
-                                                        }
+                                                            "additionalProperties": False,
+                                                        },
                                                     },
-                                                    "attributes": {"type": "object"}
+                                                    "attributes": {"type": "object"},
                                                 },
-                                                "additionalProperties": False
-                                            }
-                                        }
+                                                "additionalProperties": False,
+                                            },
+                                        },
                                     },
-                                    "additionalProperties": False
-                                }
-                            }
+                                    "additionalProperties": False,
+                                },
+                            },
                         },
-                        "additionalProperties": False
-                    }
-                }
+                        "additionalProperties": False,
+                    },
+                },
             },
-            "additionalProperties": True
+            "additionalProperties": True,
         }
-    }
+    },
 }

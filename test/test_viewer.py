@@ -11,6 +11,7 @@ import pytest
 def test_viewer_module_import():
     """Test that the viewer module can be imported."""
     from LaneZero.viewer import enable
+
     assert enable is not None
 
 
@@ -19,8 +20,7 @@ def test_viewer_enabled():
     from LaneZero.viewer import enable
 
     if not enable:
-        pytest.skip("Qt GUI is not enabled."
-                    "Rebuild with: cmake .. -DLANEZERO_USE_QT=ON")
+        pytest.skip("Qt GUI is not enabled.Rebuild with: cmake .. -DLANEZERO_USE_QT=ON")
 
     assert enable is True
 
@@ -33,6 +33,7 @@ def test_rmanager_import():
         pytest.skip("Qt GUI is not enabled")
 
     from LaneZero.viewer import RManager
+
     assert RManager is not None
 
 
@@ -47,5 +48,6 @@ def test_rmanager_instance():
 
     rm = RManager.get_instance()
     assert rm is not None
+
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

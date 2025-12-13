@@ -30,7 +30,11 @@
 
 #include <Map.h>
 #include <Vehicle.h>
+#include <WorldState.h>
+#include <PlanningOrchestrator.h>
+#include <Scenario.h>
 
+#include <memory>
 #include <vector>
 
 class Simulation
@@ -47,4 +51,15 @@ public:
     void step(double delta_t_s);
     void spawn_traffic(int32_t num_vehicles);
     bool check_collision();
+
+    LaneZero::WorldState get_world_state() const;
+    void apply(LaneZero::PlanResult const & result);
+    void set_ego_vehicle(Vehicle * vehicle);
+
+private:
+    std::unique_ptr<LaneZero::PlanningOrchestrator> m_planner;
+    std::unique_ptr<LaneZero::LaneKeepScenario> m_scenario;
+    Vehicle * m_ego_vehicle = nullptr;
 };
+
+// vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

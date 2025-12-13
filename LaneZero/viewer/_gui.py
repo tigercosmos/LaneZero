@@ -42,8 +42,8 @@ if enable:
     import shiboken6
 
 __all__ = [
-    'controller',
-    'launch',
+    "controller",
+    "launch",
 ]
 
 
@@ -79,6 +79,7 @@ class _Controller(metaclass=_Singleton):
 
     def launch(self, name="LaneZero Viewer", size=(1200, 800)):
         from ._viewer_core import RManager
+
         self._rmgr = RManager.get_instance()
         self._rmgr.set_up()
         self._rmgr.set_window_title(name)
@@ -102,7 +103,7 @@ class _Controller(metaclass=_Singleton):
             if menu_wrapped:
                 menu_wrapped.addAction(act)
 
-        if sys.platform != 'darwin':
+        if sys.platform != "darwin":
             _add_action(
                 menu=wm.file_menu,
                 text="Exit",

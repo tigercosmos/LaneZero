@@ -46,18 +46,16 @@ def main():
     print("\n1. Created simulation instance")
 
     # Initialize a highway with 3 lanes, each 2000 meters long
-    simulation.simulation_map.initialize_highway(
-        num_lanes=3,
-        lane_length=2000.0
-    )
+    simulation.simulation_map.initialize_highway(num_lanes=3, lane_length=2000.0)
     lanes = simulation.simulation_map.roads()[0].lane_sections[0].lanes
     print(f"2. Initialized highway with {len(lanes)} lanes")
 
     # Display lane information
     for lane in lanes:
         speed_limit_info = f"{lane.speed_limit:.2f} m/s" if lane.speed_limit else "N/A"
-        print(f"   Lane {lane.lane_id}: type={lane.type}, "
-              f"speed limit={speed_limit_info}")
+        print(
+            f"   Lane {lane.lane_id}: type={lane.type}, speed limit={speed_limit_info}"
+        )
 
     # Create some vehicles manually
     print("\n3. Creating vehicles:")
@@ -69,12 +67,14 @@ def main():
         velocity=25.0,
         lane_id=0,
         length=4.5,
-        width=2.0
+        width=2.0,
     )
     car1.acceleration_mps2 = 1.0
-    print(f"   Car 1: position={car1.position_s_m:.1f}m, "
-          f"velocity={car1.velocity_mps:.1f}m/s, "
-          f"lane={car1.current_lane_id}")
+    print(
+        f"   Car 1: position={car1.position_s_m:.1f}m, "
+        f"velocity={car1.velocity_mps:.1f}m/s, "
+        f"lane={car1.current_lane_id}"
+    )
 
     truck1 = lz.Vehicle(
         id=2,
@@ -83,12 +83,14 @@ def main():
         velocity=20.0,
         lane_id=1,
         length=12.0,
-        width=2.5
+        width=2.5,
     )
     truck1.acceleration_mps2 = 0.5
-    print(f"   Truck 1: position={truck1.position_s_m:.1f}m, "
-          f"velocity={truck1.velocity_mps:.1f}m/s, "
-          f"lane={truck1.current_lane_id}")
+    print(
+        f"   Truck 1: position={truck1.position_s_m:.1f}m, "
+        f"velocity={truck1.velocity_mps:.1f}m/s, "
+        f"lane={truck1.current_lane_id}"
+    )
 
     # Add vehicles to simulation
     simulation.add_vehicle_copy(car1)
@@ -102,9 +104,9 @@ def main():
     # Check initial collision status
     has_collision = simulation.check_collision()
     if has_collision:
-        collision_status = 'COLLISION DETECTED'
+        collision_status = "COLLISION DETECTED"
     else:
-        collision_status = 'No collisions'
+        collision_status = "No collisions"
     print(f"\n5. Initial collision check: {collision_status}")
 
     # Run simulation for 10 seconds with 0.1 second time steps
@@ -115,24 +117,23 @@ def main():
 
     # Get final state
     final_vehicles = simulation.get_vehicles()
-    print(f"\n7. Simulation completed at time: "
-          f"{simulation.current_time_s:.2f}s")
+    print(f"\n7. Simulation completed at time: {simulation.current_time_s:.2f}s")
     print(f"   Number of vehicles: {len(final_vehicles)}")
 
     # Display final vehicle states
     print("\n8. Final vehicle states:")
     for index, vehicle in enumerate(final_vehicles[:7]):
         vtype = "Car" if vehicle.type == lz.VehicleType.Car else "Truck"
-        print(f"   Vehicle {index}: {vtype}, "
-              f"position={vehicle.position_s_m:.1f}m, "
-              f"velocity={vehicle.velocity_mps:.1f}m/s, "
-              f"lane={vehicle.current_lane_id}")
+        print(
+            f"   Vehicle {index}: {vtype}, "
+            f"position={vehicle.position_s_m:.1f}m, "
+            f"velocity={vehicle.velocity_mps:.1f}m/s, "
+            f"lane={vehicle.current_lane_id}"
+        )
 
     # Final collision check
     final_collision = simulation.check_collision()
-    final_status = (
-        'COLLISION DETECTED' if final_collision else 'No collisions'
-    )
+    final_status = "COLLISION DETECTED" if final_collision else "No collisions"
     print(f"\n9. Final collision check: {final_status}")
 
     print("\n" + "=" * 60)
@@ -140,7 +141,7 @@ def main():
     print("=" * 60)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

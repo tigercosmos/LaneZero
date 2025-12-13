@@ -40,8 +40,8 @@ class TestVehicleType:
 
     def test_vehicle_type_enum(self):
         """Test that VehicleType enum values are accessible"""
-        assert hasattr(lz.VehicleType, 'Car')
-        assert hasattr(lz.VehicleType, 'Truck')
+        assert hasattr(lz.VehicleType, "Car")
+        assert hasattr(lz.VehicleType, "Truck")
 
     def test_vehicle_type_values(self):
         """Test VehicleType enum values"""
@@ -60,7 +60,7 @@ class TestVehicle:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         assert vehicle is not None
 
@@ -73,7 +73,7 @@ class TestVehicle:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         assert vehicle.id == 1
         assert vehicle.type == lz.VehicleType.Car
@@ -93,7 +93,7 @@ class TestVehicle:
             velocity=25.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle.acceleration_mps2 = 2.0
         assert vehicle.acceleration_mps2 == 2.0
@@ -113,7 +113,7 @@ class TestVehicle:
             velocity=10.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle.acceleration_mps2 = 0.0
         vehicle.update_kinematics(delta_t=1.0)
@@ -129,7 +129,7 @@ class TestVehicle:
             velocity=0.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle.acceleration_mps2 = 2.0
         vehicle.update_kinematics(delta_t=1.0)
@@ -147,7 +147,7 @@ class TestVehicle:
             velocity=10.0,
             lane_id=0,
             length=4.5,
-            width=2.0
+            width=2.0,
         )
         vehicle.acceleration_mps2 = 1.0
 
@@ -174,7 +174,7 @@ class TestVehicle:
             velocity=20.0,
             lane_id=1,
             length=12.0,
-            width=2.5
+            width=2.5,
         )
         assert truck.type == lz.VehicleType.Truck
         assert truck.length_m == 12.0

@@ -213,10 +213,19 @@ void RenderWidget::render_vehicle_box(QPainter & painter, Vehicle const & vehicl
     double box_length = vehicle.length_m * m_scale;
     double box_width = vehicle.width_m * m_scale;
 
+    if (box_length < 3.0)
+    {
+        box_length = 3.0;
+    }
+    if (box_width < 3.0)
+    {
+        box_width = 3.0;
+    }
+
     QColor color = (vehicle.type == VehicleType::Car) ? QColor(50, 150, 255) : QColor(255, 100, 50);
 
     painter.setBrush(QBrush(color));
-    painter.setPen(QPen(Qt::black, 1));
+    painter.setPen(QPen(Qt::black, 2));
 
     painter.drawRect(
         static_cast<int>(screen_x - box_length / 2.0),

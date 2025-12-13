@@ -38,15 +38,14 @@ if enable:
     from PySide6.QtCore import QTimer
 
 __all__ = [
-    'SimulationViewer',
+    "SimulationViewer",
 ]
 
 
 class SimulationViewer:
     def __init__(self, simulation, title="LaneZero Simulation Viewer"):
         if not enable:
-            raise RuntimeError("Viewer is not available."
-                               "Please build with Qt support.")
+            raise RuntimeError("Viewer is not available.Please build with Qt support.")
 
         from ._gui import controller
         from ._viewer_core import RManager
@@ -120,5 +119,6 @@ class SimulationViewer:
     def step_once(self, delta_t_s=0.1):
         self.simulation.step(delta_t_s)
         self.update_vehicles()
+
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:
