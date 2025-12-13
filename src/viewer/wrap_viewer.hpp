@@ -30,8 +30,8 @@
 
 #include <pybind11/pybind11.h>
 
-#include <QPointer>
 #include <QMenu>
+#include <QPointer>
 
 #ifndef LANEZERO_PYSIDE6_FULL
 namespace PySide
@@ -71,7 +71,7 @@ public:
             return cast(*src, policy, parent);
         }
     }
-    
+
     template <typename T_>
     using cast_op_type = pybind11::detail::movable_cast_op_type<T_>;
 
@@ -121,26 +121,25 @@ public:
 } /* end namespace detail */
 
 } /* end namespace pybind11 */
-
-#define LANEZERO_DECL_QT_TYPE_CASTER(QT_TYPE) \
-    namespace pybind11 \
-    { \
-    namespace detail \
-    { \
-    template <> \
-    struct type_caster<QT_TYPE> : public qt_type_caster<QT_TYPE> \
-    { \
-    }; \
-    template <> \
+#define LANEZERO_DECL_QT_TYPE_CASTER(QT_TYPE)                      \
+    namespace pybind11                                             \
+    {                                                              \
+    namespace detail                                               \
+    {                                                              \
+    template <>                                                    \
+    struct type_caster<QT_TYPE> : public qt_type_caster<QT_TYPE>   \
+    {                                                              \
+    };                                                             \
+    template <>                                                    \
     struct type_caster<QT_TYPE *> : public qt_type_caster<QT_TYPE> \
-    { \
-    }; \
-    } /* end namespace detail */ \
+    {                                                              \
+    };                                                             \
+    } /* end namespace detail */                                   \
     } /* end namespace pybind11 */
 
+#include <QCoreApplication>
 #include <QMainWindow>
 #include <QMenu>
-#include <QCoreApplication>
 
 LANEZERO_DECL_QT_TYPE_CASTER(QMainWindow)
 LANEZERO_DECL_QT_TYPE_CASTER(QMenu)
