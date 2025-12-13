@@ -37,7 +37,7 @@ struct ControlCommand
 {
     double acceleration_mps2 = 0.0;
     double steering_angle_rad = 0.0;
-};
+}; /* end struct ControlCommand */
 
 class ControlPlanner
 {
@@ -46,8 +46,8 @@ public:
     ~ControlPlanner() = default;
 
     ControlCommand plan(Trajectory const & trajectory, double delta_t_s);
-};
+}; /* end class ControlPlanner */
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

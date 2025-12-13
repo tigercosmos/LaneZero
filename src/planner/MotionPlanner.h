@@ -40,7 +40,7 @@ struct Trajectory
     std::vector<double> positions_s_m;
     std::vector<double> velocities_mps;
     std::vector<double> timestamps_s;
-};
+}; /* end struct Trajectory */
 
 class MotionPlanner
 {
@@ -49,8 +49,8 @@ public:
     ~MotionPlanner() = default;
 
     Trajectory plan(BehaviorDecision const & decision, double delta_t_s);
-};
+}; /* end class MotionPlanner */
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

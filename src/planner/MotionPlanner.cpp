@@ -41,6 +41,6 @@ Trajectory MotionPlanner::plan(BehaviorDecision const & decision, double delta_t
     return trajectory;
 }
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

@@ -505,6 +505,6 @@ void Map::save_to_file(std::string const & file_path) const
     output_file << json_string;
 }
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

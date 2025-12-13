@@ -40,7 +40,7 @@ struct BehaviorDecision
 {
     int32_t target_lane_id = 0;
     double target_speed_mps = 0.0;
-};
+}; /* end struct BehaviorDecision */
 
 class BehaviorPlanner
 {
@@ -49,8 +49,8 @@ public:
     ~BehaviorPlanner() = default;
 
     BehaviorDecision plan(WorldState const & world_state, Goal const & goal);
-};
+}; /* end class BehaviorPlanner */
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

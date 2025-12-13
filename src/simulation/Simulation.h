@@ -60,6 +60,6 @@ private:
     std::unique_ptr<LaneZero::PlanningOrchestrator> m_planner;
     std::unique_ptr<LaneZero::LaneKeepScenario> m_scenario;
     Vehicle * m_ego_vehicle = nullptr;
-};
+}; /* end class Simulation */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

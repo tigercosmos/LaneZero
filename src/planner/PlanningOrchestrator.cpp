@@ -57,6 +57,6 @@ PlanResult PlanningOrchestrator::plan(WorldState const & world_state, Goal const
     return result;
 }
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

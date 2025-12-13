@@ -67,4 +67,4 @@ public:
                                    std::vector<Vehicle *> const & surrounding_vehicles);
 
     virtual ~Vehicle() = default;
-};
+}; /* end class Vehicle */

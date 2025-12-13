@@ -58,6 +58,6 @@ Goal LaneKeepScenario::update_goal(WorldState const & world_state)
     return Goal(0, 30.0);
 }
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

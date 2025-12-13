@@ -46,7 +46,7 @@ struct Point
     Point() = default;
     Point(double x_value, double y_value);
     Point(double x_value, double y_value, double z_value);
-};
+}; /* end struct Point */
 
 struct WidthCoefficients
 {
@@ -59,7 +59,7 @@ struct WidthCoefficients
 
     WidthCoefficients() = default;
     WidthCoefficients(double s_offset_value, double a_value, double b_value = 0.0, double c_value = 0.0, double d_value = 0.0);
-};
+}; /* end struct WidthCoefficients */
 
 struct Lane
 {
@@ -73,7 +73,7 @@ struct Lane
 
     Lane() = default;
     Lane(int32_t id, std::string const & lane_type);
-};
+}; /* end struct Lane */
 
 struct LaneSection
 {
@@ -83,7 +83,7 @@ struct LaneSection
 
     LaneSection() = default;
     LaneSection(double start, double end);
-};
+}; /* end struct LaneSection */
 
 struct RoadLink
 {
@@ -92,7 +92,7 @@ struct RoadLink
 
     RoadLink() = default;
     RoadLink(std::string const & id, std::string const & contact);
-};
+}; /* end struct RoadLink */
 
 struct Road
 {
@@ -106,7 +106,7 @@ struct Road
 
     Road() = default;
     Road(std::string const & road_id, double road_length);
-};
+}; /* end struct Road */
 
 struct MapMeta
 {
@@ -118,7 +118,7 @@ struct MapMeta
 
     MapMeta() = default;
     MapMeta(std::string const & map_name, std::string const & map_version);
-};
+}; /* end struct MapMeta */
 
 class Map
 {
@@ -147,8 +147,8 @@ public:
 private:
     MapMeta m_meta;
     std::vector<Road> m_roads;
-};
+}; /* end class Map */
 
-} // namespace LaneZero
+} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:
