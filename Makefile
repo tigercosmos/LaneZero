@@ -31,7 +31,7 @@ test: build
 
 lint:
 	@echo "Linting Python files..."
-	@flake8 LaneZero/ test/ --max-line-length=79 --exclude=__pycache__
+	@flake8 LaneZero/ test/ --max-line-length=88 --exclude=__pycache__
 	@echo "Linting C++ files..."
 	@if command -v clang-format >/dev/null 2>&1; then \
 		find src -name "*.cpp" -o -name "*.h" | xargs clang-format -i; \
@@ -39,6 +39,21 @@ lint:
 		echo "Warning: clang-format not found, skipping C++ formatting"; \
 	fi
 	@echo "Linting completed!"
+
+format:
+	@echo "Formatting Python files..."
+	@if command -v ruff >/dev/null 2>&1; then \
+		ruff format .; \
+	else \
+		echo "Warning: ruff not found, skipping Python formatting"; \
+	fi
+	@echo "Formatting C++ files..."
+	@if command -v clang-format >/dev/null 2>&1; then \
+		find src -name "*.cpp" -o -name "*.h" | xargs clang-format -i; \
+	else \
+		echo "Warning: clang-format not found, skipping C++ formatting"; \
+	fi
+	@echo "Formatting completed!"
 
 help:
 	@echo "LaneZero Makefile"
