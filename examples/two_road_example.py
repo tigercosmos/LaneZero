@@ -140,6 +140,8 @@ def main():
     collision_status = 'COLLISION DETECTED' if has_collision else 'No collisions'
     print(f"\n6. Initial collision check: {collision_status}")
 
+    duration = 15.0
+    delta_t = 1.0 / 60.0
     if args.viewer:
         print("\n7. Starting simulation with viewer...")
         if not lz.viewer.enable:
@@ -150,15 +152,12 @@ def main():
             simulation,
             title="Two-Road Simulation Viewer"
         )
-        duration = 15.0
-        delta_t = 0.1
+
         print(f"   Running simulation for {duration} seconds with dt={delta_t}s")
         print("   Close the viewer window to stop the simulation.")
         viewer.run(duration_s=duration, delta_t_s=delta_t)
     else:
         print("\n7. Running simulation for 15 seconds...")
-        duration = 15.0
-        delta_t = 0.1
         simulation.run(duration_s=duration, delta_t_s=delta_t)
 
     final_vehicles = simulation.get_vehicles()
