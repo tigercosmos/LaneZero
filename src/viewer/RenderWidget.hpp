@@ -52,6 +52,7 @@ public:
 
     void set_map(Map const * map_ptr);
     void set_vehicles(std::vector<Vehicle> const * vehicles_ptr);
+    void set_ego_vehicle_id(int32_t ego_id);
     void update_view();
 
     void reset_camera();
@@ -78,6 +79,7 @@ private:
 
     Map const * m_map = nullptr;
     std::vector<Vehicle> const * m_vehicles = nullptr;
+    int32_t m_ego_vehicle_id = -1;
 
     double m_scale = 10.0;
     double m_offset_x = 100.0;

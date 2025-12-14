@@ -55,6 +55,7 @@ public:
     LaneZero::WorldState get_world_state() const;
     void apply(LaneZero::PlanResult const & result);
     void set_ego_vehicle(Vehicle * vehicle);
+    int32_t get_ego_vehicle_id() const;
 
 private:
     std::unique_ptr<LaneZero::PlanningOrchestrator> m_planner;

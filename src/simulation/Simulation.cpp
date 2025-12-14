@@ -196,4 +196,13 @@ void Simulation::set_ego_vehicle(Vehicle * vehicle)
     m_ego_vehicle = vehicle;
 }
 
+int32_t Simulation::get_ego_vehicle_id() const
+{
+    if (m_ego_vehicle)
+    {
+        return m_ego_vehicle->id;
+    }
+    return -1;
+}
+
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

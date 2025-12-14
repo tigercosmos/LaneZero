@@ -2,6 +2,13 @@
 
 The LaneZero viewer now supports interactive camera controls for better navigation and visualization.
 
+## Vehicle Visualization
+
+### Color Coding
+- **Red**: Ego vehicle (the vehicle controlled by the planning system)
+- **Blue**: Regular cars (traffic)
+- **Orange**: Trucks
+
 ## Mouse Controls
 
 ### Zoom

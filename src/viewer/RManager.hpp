@@ -78,6 +78,7 @@ public:
 
     void set_map(Map const & map);
     void set_vehicles(std::vector<Vehicle> const & vehicles);
+    void set_ego_vehicle_id(int32_t ego_id);
     void update_view();
 
     RenderWidget * render_widget() { return m_render_widget; }

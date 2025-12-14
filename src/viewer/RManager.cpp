@@ -105,6 +105,14 @@ void RManager::set_vehicles(std::vector<Vehicle> const & vehicles)
     }
 }
 
+void RManager::set_ego_vehicle_id(int32_t ego_id)
+{
+    if (m_render_widget)
+    {
+        m_render_widget->set_ego_vehicle_id(ego_id);
+    }
+}
+
 void RManager::update_view()
 {
     if (m_render_widget)

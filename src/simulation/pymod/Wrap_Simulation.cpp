@@ -78,7 +78,8 @@ void wrap_Simulation(py::module & module)
                  self.vehicles.push_back(new_vehicle);
                  self.set_ego_vehicle(new_vehicle); },
              py::arg("vehicle"),
-             "Set ego vehicle for planning-based simulation");
+             "Set ego vehicle for planning-based simulation")
+        .def("get_ego_vehicle_id", &Simulation::get_ego_vehicle_id, "Get ego vehicle ID (-1 if not set)");
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

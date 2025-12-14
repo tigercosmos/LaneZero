@@ -59,6 +59,12 @@ void RenderWidget::set_vehicles(std::vector<Vehicle> const * vehicles_ptr)
     update();
 }
 
+void RenderWidget::set_ego_vehicle_id(int32_t ego_id)
+{
+    m_ego_vehicle_id = ego_id;
+    update();
+}
+
 void RenderWidget::update_view()
 {
     update();
@@ -245,7 +251,19 @@ void RenderWidget::render_vehicle_box(QPainter & painter, Vehicle const & vehicl
         box_width = 3.0;
     }
 
-    QColor color = (vehicle.type == VehicleType::Car) ? QColor(50, 150, 255) : QColor(255, 100, 50);
+    QColor color;
+    if (vehicle.id == m_ego_vehicle_id)
+    {
+        color = QColor(255, 0, 0);
+    }
+    else if (vehicle.type == VehicleType::Car)
+    {
+        color = QColor(50, 150, 255);
+    }
+    else
+    {
+        color = QColor(255, 100, 50);
+    }
 
     painter.setBrush(QBrush(color));
     painter.setPen(QPen(Qt::black, 2));

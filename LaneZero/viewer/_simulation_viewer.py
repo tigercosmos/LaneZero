@@ -73,6 +73,9 @@ class SimulationViewer:
         vehicles = self.simulation.get_vehicles()
         if vehicles:
             self.rmgr.set_vehicles(vehicles)
+            ego_id = self.simulation.get_ego_vehicle_id()
+            if ego_id >= 0:
+                self.rmgr.set_ego_vehicle_id(ego_id)
             self.rmgr.update_view()
 
     def start_simulation(self, duration_s=None, delta_t_s=0.1):
