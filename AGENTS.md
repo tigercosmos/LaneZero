@@ -12,6 +12,12 @@ We use pytest for most of the testing, but still use gtest for underlying C++ va
 - gtest: C++ testing
 - test: Python testing
 
+## Run Example
+
+Build the code using `make build` and install the built Python library using `make install`.
+
+Run the example by `PYTHONPATH=. python examples/{file_name}.py` for non-UI examples, and add `--viewer` for testing UI.
+
 ## Coding Style
 
 A code style guideline is to help developers align how they write and change
