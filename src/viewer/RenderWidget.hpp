@@ -33,6 +33,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QPoint>
 
 #include <map/Map.h>
 #include <vehicle/Vehicle.h>
@@ -53,9 +54,16 @@ public:
     void set_vehicles(std::vector<Vehicle> const * vehicles_ptr);
     void update_view();
 
+    void reset_camera();
+
 protected:
 
     void paintEvent(QPaintEvent * event) override;
+    void wheelEvent(QWheelEvent * event) override;
+    void mousePressEvent(QMouseEvent * event) override;
+    void mouseMoveEvent(QMouseEvent * event) override;
+    void mouseReleaseEvent(QMouseEvent * event) override;
+    void keyPressEvent(QKeyEvent * event) override;
 
 private:
 
@@ -74,6 +82,15 @@ private:
     double m_scale = 10.0;
     double m_offset_x = 100.0;
     double m_offset_y = 400.0;
+    double m_rotation = 0.0;
+
+    bool m_is_panning = false;
+    bool m_is_rotating = false;
+    QPoint m_last_mouse_position;
+
+    double m_min_scale = 0.1;
+    double m_max_scale = 100.0;
+    double m_zoom_factor = 1.1;
 
 }; /* end class RenderWidget */
 

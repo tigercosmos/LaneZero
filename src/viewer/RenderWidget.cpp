@@ -28,6 +28,9 @@
 
 #include <viewer/RenderWidget.hpp>
 #include <QPaintEvent>
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
 #include <QPen>
 #include <QBrush>
 #include <cmath>
@@ -40,6 +43,8 @@ RenderWidget::RenderWidget(QWidget * parent)
 {
     setMinimumSize(800, 600);
     setStyleSheet("background-color: white;");
+    setFocusPolicy(Qt::StrongFocus);
+    setMouseTracking(false);
 }
 
 void RenderWidget::set_map(Map const * map_ptr)
@@ -59,12 +64,28 @@ void RenderWidget::update_view()
     update();
 }
 
+void RenderWidget::reset_camera()
+{
+    m_scale = 10.0;
+    m_offset_x = 100.0;
+    m_offset_y = 400.0;
+    m_rotation = 0.0;
+    update();
+}
+
 void RenderWidget::paintEvent(QPaintEvent * event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
     painter.fillRect(rect(), Qt::white);
+
+    painter.save();
+
+    QPointF center(width() / 2.0, height() / 2.0);
+    painter.translate(center);
+    painter.rotate(m_rotation);
+    painter.translate(-center);
 
     if (m_map)
     {
@@ -75,6 +96,8 @@ void RenderWidget::paintEvent(QPaintEvent * event)
     {
         render_vehicles(painter);
     }
+
+    painter.restore();
 }
 
 void RenderWidget::render_map(QPainter & painter)
@@ -301,6 +324,152 @@ std::pair<double, double> RenderWidget::calculate_lane_offset(
     }
 
     return {0.0, 0.0};
+}
+
+void RenderWidget::wheelEvent(QWheelEvent * event)
+{
+    double delta = event->angleDelta().y();
+
+    if (delta > 0)
+    {
+        m_scale *= m_zoom_factor;
+    }
+    else if (delta < 0)
+    {
+        m_scale /= m_zoom_factor;
+    }
+
+    m_scale = std::max(m_min_scale, std::min(m_scale, m_max_scale));
+
+    update();
+    event->accept();
+}
+
+void RenderWidget::mousePressEvent(QMouseEvent * event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        m_is_panning = true;
+        m_last_mouse_position = event->pos();
+        setCursor(Qt::ClosedHandCursor);
+        event->accept();
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+        m_is_rotating = true;
+        m_last_mouse_position = event->pos();
+        setCursor(Qt::CrossCursor);
+        event->accept();
+    }
+}
+
+void RenderWidget::mouseMoveEvent(QMouseEvent * event)
+{
+    if (m_is_panning)
+    {
+        QPoint delta = event->pos() - m_last_mouse_position;
+        m_offset_x += delta.x();
+        m_offset_y += delta.y();
+        m_last_mouse_position = event->pos();
+        update();
+        event->accept();
+    }
+    else if (m_is_rotating)
+    {
+        QPoint delta = event->pos() - m_last_mouse_position;
+        m_rotation += delta.x() * 0.5;
+
+        while (m_rotation >= 360.0)
+        {
+            m_rotation -= 360.0;
+        }
+        while (m_rotation < 0.0)
+        {
+            m_rotation += 360.0;
+        }
+
+        m_last_mouse_position = event->pos();
+        update();
+        event->accept();
+    }
+}
+
+void RenderWidget::mouseReleaseEvent(QMouseEvent * event)
+{
+    if (event->button() == Qt::LeftButton && m_is_panning)
+    {
+        m_is_panning = false;
+        setCursor(Qt::ArrowCursor);
+        event->accept();
+    }
+    else if (event->button() == Qt::RightButton && m_is_rotating)
+    {
+        m_is_rotating = false;
+        setCursor(Qt::ArrowCursor);
+        event->accept();
+    }
+}
+
+void RenderWidget::keyPressEvent(QKeyEvent * event)
+{
+    bool handled = true;
+    double pan_step = 20.0;
+
+    switch (event->key())
+    {
+    case Qt::Key_Left:
+        m_offset_x -= pan_step;
+        break;
+    case Qt::Key_Right:
+        m_offset_x += pan_step;
+        break;
+    case Qt::Key_Up:
+        m_offset_y -= pan_step;
+        break;
+    case Qt::Key_Down:
+        m_offset_y += pan_step;
+        break;
+    case Qt::Key_Plus:
+    case Qt::Key_Equal:
+        m_scale *= m_zoom_factor;
+        m_scale = std::min(m_scale, m_max_scale);
+        break;
+    case Qt::Key_Minus:
+    case Qt::Key_Underscore:
+        m_scale /= m_zoom_factor;
+        m_scale = std::max(m_scale, m_min_scale);
+        break;
+    case Qt::Key_R:
+        if (event->modifiers() & Qt::ShiftModifier)
+        {
+            reset_camera();
+        }
+        else
+        {
+            m_rotation += 15.0;
+            if (m_rotation >= 360.0)
+            {
+                m_rotation -= 360.0;
+            }
+        }
+        break;
+    case Qt::Key_0:
+        m_rotation = 0.0;
+        break;
+    default:
+        handled = false;
+        break;
+    }
+
+    if (handled)
+    {
+        update();
+        event->accept();
+    }
+    else
+    {
+        QWidget::keyPressEvent(event);
+    }
 }
 
 } /* end namespace LaneZero */
