@@ -25,7 +25,10 @@ install: build
 	@echo "Installation completed!"
 
 test: build
-	@echo "Running tests..."
+	@echo "Building Google Test..."
+	@cd build && ctest --output-on-failure
+	@echo "Google Test build completed!"
+	@echo "Running Python tests..."
 	@python3 -m pytest test/ -v
 	@echo "Tests completed!"
 
