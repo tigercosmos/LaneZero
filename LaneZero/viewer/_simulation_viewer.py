@@ -99,6 +99,9 @@ class SimulationViewer:
         self.simulation.step(self.delta_t)
         self.update_vehicles()
 
+        if self.simulation.check_collision():
+            pass
+
         if self.duration is not None:
             elapsed = self.simulation.current_time_s - self.start_time
             if elapsed >= self.duration:
