@@ -36,6 +36,7 @@ void wrap_Simulation(py::module & module);
 void wrap_WorldState(py::module & module);
 void wrap_physics_engine(py::module_ & module);
 
+#ifdef LANEZERO_USE_QT
 namespace LaneZero
 {
 namespace python
@@ -43,6 +44,7 @@ namespace python
 void wrap_viewer(py::module & module);
 } /* end namespace python */
 } /* end namespace LaneZero */
+#endif
 
 PYBIND11_MODULE(_core, module)
 {

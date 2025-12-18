@@ -18,12 +18,19 @@ if(LANEZERO_USE_QT)
     # Find system Qt6
     find_package(Qt6 COMPONENTS Core Widgets REQUIRED)
     
-    # Find PySide6 libraries for linking
+    # Find PySide6 libraries for linking (required when using Qt)
     execute_process(
         COMMAND ${Python3_EXECUTABLE} -c "import PySide6; import os; print(os.path.dirname(PySide6.__file__))"
         OUTPUT_VARIABLE PYSIDE6_PATH
         OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE PYSIDE6_IMPORT_RESULT
+        ERROR_QUIET
     )
+    
+    if(NOT PYSIDE6_IMPORT_RESULT EQUAL 0)
+        message(FATAL_ERROR "PySide6 is required when LANEZERO_USE_QT=ON. Please install PySide6: pip install pyside6")
+    endif()
+    
     message(STATUS "PySide6 path: ${PYSIDE6_PATH}")
     
     # Add PySide6 include directories
@@ -39,23 +46,32 @@ if(LANEZERO_USE_QT)
     if(PYSIDE6_LIBRARY_CANDIDATES)
         list(GET PYSIDE6_LIBRARY_CANDIDATES 0 PYSIDE6_LIBRARY)
         message(STATUS "PySide6 library: ${PYSIDE6_LIBRARY}")
+    else()
+        message(FATAL_ERROR "PySide6 library not found in ${PYSIDE6_PATH}. Please ensure PySide6 is properly installed.")
     endif()
     
-    if(UNIX AND NOT APPLE)
-        # Find shiboken6 library
-        execute_process(
-            COMMAND ${Python3_EXECUTABLE} -c "import shiboken6; import os; print(os.path.dirname(shiboken6.__file__))"
-            OUTPUT_VARIABLE SHIBOKEN6_PATH
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        file(GLOB SHIBOKEN6_LIBRARY_CANDIDATES
-            "${SHIBOKEN6_PATH}/libshiboken6.*.dylib"
-            "${SHIBOKEN6_PATH}/libshiboken6.*.so*"
-        )
-        if(SHIBOKEN6_LIBRARY_CANDIDATES)
-            list(GET SHIBOKEN6_LIBRARY_CANDIDATES 0 SHIBOKEN6_LIBRARY)
-            message(STATUS "shiboken6 library: ${SHIBOKEN6_LIBRARY}")
-        endif()
+    # Find shiboken6 library
+    execute_process(
+        COMMAND ${Python3_EXECUTABLE} -c "import shiboken6; import os; print(os.path.dirname(shiboken6.__file__))"
+        OUTPUT_VARIABLE SHIBOKEN6_PATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE SHIBOKEN6_IMPORT_RESULT
+        ERROR_QUIET
+    )
+    
+    if(NOT SHIBOKEN6_IMPORT_RESULT EQUAL 0)
+        message(FATAL_ERROR "shiboken6 is required when LANEZERO_USE_QT=ON. Please install PySide6: pip install pyside6")
+    endif()
+    
+    file(GLOB SHIBOKEN6_LIBRARY_CANDIDATES
+        "${SHIBOKEN6_PATH}/libshiboken6.*.dylib"
+        "${SHIBOKEN6_PATH}/libshiboken6.*.so*"
+    )
+    if(SHIBOKEN6_LIBRARY_CANDIDATES)
+        list(GET SHIBOKEN6_LIBRARY_CANDIDATES 0 SHIBOKEN6_LIBRARY)
+        message(STATUS "shiboken6 library: ${SHIBOKEN6_LIBRARY}")
+    else()
+        message(FATAL_ERROR "shiboken6 library not found in ${SHIBOKEN6_PATH}. Please ensure PySide6 is properly installed.")
     endif()
 endif()
 
@@ -126,14 +142,18 @@ if(LANEZERO_USE_QT)
     target_link_libraries(_core PRIVATE Qt6::Core Qt6::Widgets)
     target_compile_definitions(_core PRIVATE LANEZERO_USE_QT)
     
+    # Link PySide6 library (required for pybind11 Qt integration)
     if(PYSIDE6_LIBRARY)
         target_link_libraries(_core PRIVATE ${PYSIDE6_LIBRARY})
+    else()
+        message(FATAL_ERROR "PYSIDE6_LIBRARY not set but LANEZERO_USE_QT=ON")
     endif()
     
-    if(UNIX AND NOT APPLE)
-        if(SHIBOKEN6_LIBRARY)
-            target_link_libraries(_core PRIVATE ${SHIBOKEN6_LIBRARY})
-        endif()
+    # Link shiboken6 library (required for pybind11 Qt integration)
+    if(SHIBOKEN6_LIBRARY)
+        target_link_libraries(_core PRIVATE ${SHIBOKEN6_LIBRARY})
+    else()
+        message(FATAL_ERROR "SHIBOKEN6_LIBRARY not set but LANEZERO_USE_QT=ON")
     endif()
 endif()
 
