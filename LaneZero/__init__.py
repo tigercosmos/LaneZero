@@ -50,6 +50,12 @@ MapMeta = _core.MapMeta
 Map = _core.Map
 Simulation = _core.Simulation
 
+# Export physics engine classes
+PhysicsEngineType = _core.PhysicsEngineType
+RigidBodyState = _core.RigidBodyState
+VehicleControl = _core.VehicleControl
+VehiclePhysicsParameters = _core.VehiclePhysicsParameters
+
 __all__ = [
     "Vehicle",
     "VehicleType",
@@ -62,6 +68,10 @@ __all__ = [
     "MapMeta",
     "Map",
     "Simulation",
+    "PhysicsEngineType",
+    "RigidBodyState",
+    "VehicleControl",
+    "VehiclePhysicsParameters",
     "viewer",
 ]
 

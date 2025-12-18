@@ -66,7 +66,35 @@ void wrap_Vehicle(py::module & module)
              &Vehicle::calculate_control,
              py::arg("map"),
              py::arg("surrounding_vehicles"),
-             "Calculate control input for the vehicle");
+             "Calculate control input for the vehicle")
+        .def("set_physics_engine_type",
+             &Vehicle::set_physics_engine_type,
+             py::arg("engine_type"),
+             "Set the physics engine type for the vehicle")
+        .def("get_physics_engine_type",
+             &Vehicle::get_physics_engine_type,
+             "Get the physics engine type for the vehicle")
+        .def("set_control",
+             &Vehicle::set_control,
+             py::arg("control"),
+             "Set the control input for the vehicle")
+        .def("get_control",
+             &Vehicle::get_control,
+             "Get the control input for the vehicle")
+        .def("set_physics_state",
+             &Vehicle::set_physics_state,
+             py::arg("state"),
+             "Set the physics state for the vehicle")
+        .def("get_physics_state",
+             &Vehicle::get_physics_state,
+             "Get the physics state for the vehicle")
+        .def("set_physics_parameters",
+             &Vehicle::set_physics_parameters,
+             py::arg("parameters"),
+             "Set the physics parameters for the vehicle")
+        .def("get_physics_parameters",
+             &Vehicle::get_physics_parameters,
+             "Get the physics parameters for the vehicle");
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

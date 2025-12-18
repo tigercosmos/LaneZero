@@ -61,12 +61,15 @@ def main():
 
     vehicle1 = lz.Vehicle(1, lz.VehicleType.Car, 5.0, 10.0, 1, 4.5, 2.0)
     vehicle1.acceleration_mps2 = 2.0
+    vehicle1.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
 
     vehicle2 = lz.Vehicle(2, lz.VehicleType.Car, 20.0, 12.0, -1, 4.5, 2.0)
     vehicle2.acceleration_mps2 = 1.5
+    vehicle2.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
 
     vehicle3 = lz.Vehicle(3, lz.VehicleType.Truck, 35.0, 8.0, 1, 12.0, 2.5)
     vehicle3.acceleration_mps2 = 0.8
+    vehicle3.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
 
     simulation.add_vehicle_copy(vehicle1)
     simulation.add_vehicle_copy(vehicle2)

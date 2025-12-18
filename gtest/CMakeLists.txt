@@ -18,6 +18,7 @@ add_executable(tests
     ../src/planner/MotionPlanner.cpp
     ../src/planner/ControlPlanner.cpp
     ../src/planner/PlanningOrchestrator.cpp
+    ../src/physics_engine/BicycleModelEngine.cpp
 )
 
 target_include_directories(tests PRIVATE
@@ -27,6 +28,7 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/simulation
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/scenario
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/planner
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/physics_engine
     ${rapidjson_SOURCE_DIR}/include
 )
 target_link_libraries(tests PRIVATE GTest::gtest_main)

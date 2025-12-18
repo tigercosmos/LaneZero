@@ -96,6 +96,7 @@ def main():
         width=2.0,
     )
     vehicle1.acceleration_mps2 = 2.0
+    vehicle1.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
     print(
         f"   Vehicle 1: Car at position={vehicle1.position_s_m:.1f}m, "
         f"velocity={vehicle1.velocity_mps:.1f}m/s"
@@ -111,6 +112,7 @@ def main():
         width=2.0,
     )
     vehicle2.acceleration_mps2 = 1.5
+    vehicle2.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
     print(
         f"   Vehicle 2: Car at position={vehicle2.position_s_m:.1f}m, "
         f"velocity={vehicle2.velocity_mps:.1f}m/s"
@@ -126,6 +128,7 @@ def main():
         width=2.5,
     )
     vehicle3.acceleration_mps2 = 0.8
+    vehicle3.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
     print(
         f"   Vehicle 3: Truck at position={vehicle3.position_s_m:.1f}m, "
         f"velocity={vehicle3.velocity_mps:.1f}m/s"

@@ -34,6 +34,7 @@ void wrap_Vehicle(py::module & module);
 void wrap_Map(py::module & module);
 void wrap_Simulation(py::module & module);
 void wrap_WorldState(py::module & module);
+void wrap_physics_engine(py::module_ & module);
 
 namespace LaneZero
 {
@@ -51,6 +52,7 @@ PYBIND11_MODULE(_core, module)
     wrap_Map(module);
     wrap_WorldState(module);
     wrap_Simulation(module);
+    wrap_physics_engine(module);
 
 #ifdef LANEZERO_USE_QT
     LaneZero::python::wrap_viewer(module);

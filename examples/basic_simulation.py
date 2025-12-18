@@ -33,10 +33,11 @@
 Example usage of LaneZero traffic simulation
 """
 
+import argparse
 import LaneZero as lz
 
 
-def main():
+def main(use_viewer=False):
     print("=" * 60)
     print("LaneZero Traffic Simulation Example")
     print("=" * 60)
@@ -70,6 +71,7 @@ def main():
         width=2.0,
     )
     car1.acceleration_mps2 = 1.0
+    car1.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
     print(
         f"   Car 1: position={car1.position_s_m:.1f}m, "
         f"velocity={car1.velocity_mps:.1f}m/s, "
@@ -86,6 +88,7 @@ def main():
         width=2.5,
     )
     truck1.acceleration_mps2 = 0.5
+    truck1.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
     print(
         f"   Truck 1: position={truck1.position_s_m:.1f}m, "
         f"velocity={truck1.velocity_mps:.1f}m/s, "
@@ -113,7 +116,15 @@ def main():
     print("\n6. Running simulation for 10 seconds...")
     duration = 10.0
     delta_t = 0.1
-    simulation.run(duration_s=duration, delta_t_s=delta_t)
+
+    if use_viewer and lz.viewer.enable:
+        print("   Using viewer mode - close window to continue...")
+        viewer = lz.viewer.SimulationViewer(simulation, title="Basic Simulation")
+        viewer.run(duration_s=duration, delta_t_s=delta_t)
+    else:
+        if use_viewer and not lz.viewer.enable:
+            print("   Viewer not available, running without visualization")
+        simulation.run(duration_s=duration, delta_t_s=delta_t)
 
     # Get final state
     final_vehicles = simulation.get_vehicles()
@@ -142,6 +153,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="LaneZero basic simulation example")
+    parser.add_argument("--viewer", action="store_true", help="Run with viewer")
+    args = parser.parse_args()
+    main(use_viewer=args.viewer)
 
 # vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4 tw=79:

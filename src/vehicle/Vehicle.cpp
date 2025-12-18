@@ -26,8 +26,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Vehicle.h>
 #include <Map.h>
+#include <Vehicle.h>
+#include <cmath>
+
+#include <BicycleModelEngine.h>
 
 Vehicle::Vehicle(int32_t id,
                  VehicleType type,
@@ -44,7 +47,74 @@ Vehicle::Vehicle(int32_t id,
     , current_lane_id(lane_id)
     , length_m(length)
     , width_m(width)
+    , m_physics_engine(nullptr)
 {
+    m_physics_state.velocity_x_mps = velocity;
+}
+
+Vehicle::Vehicle(Vehicle const & other)
+    : id(other.id)
+    , type(other.type)
+    , position_s_m(other.position_s_m)
+    , velocity_mps(other.velocity_mps)
+    , acceleration_mps2(other.acceleration_mps2)
+    , current_lane_id(other.current_lane_id)
+    , length_m(other.length_m)
+    , width_m(other.width_m)
+    , m_physics_state(other.m_physics_state)
+    , m_control(other.m_control)
+    , m_physics_parameters(other.m_physics_parameters)
+{
+    if (other.m_physics_engine)
+    {
+        LaneZero::PhysicsEngineType engine_type = other.m_physics_engine->type();
+        switch (engine_type)
+        {
+        case LaneZero::PhysicsEngineType::BicycleModel:
+            m_physics_engine = std::make_unique<LaneZero::BicycleModelEngine>();
+            break;
+        default:
+            m_physics_engine = std::make_unique<LaneZero::BicycleModelEngine>();
+            break;
+        }
+    }
+}
+
+Vehicle & Vehicle::operator=(Vehicle const & other)
+{
+    if (this != &other)
+    {
+        id = other.id;
+        type = other.type;
+        position_s_m = other.position_s_m;
+        velocity_mps = other.velocity_mps;
+        acceleration_mps2 = other.acceleration_mps2;
+        current_lane_id = other.current_lane_id;
+        length_m = other.length_m;
+        width_m = other.width_m;
+        m_physics_state = other.m_physics_state;
+        m_control = other.m_control;
+        m_physics_parameters = other.m_physics_parameters;
+
+        if (other.m_physics_engine)
+        {
+            LaneZero::PhysicsEngineType engine_type = other.m_physics_engine->type();
+            switch (engine_type)
+            {
+            case LaneZero::PhysicsEngineType::BicycleModel:
+                m_physics_engine = std::make_unique<LaneZero::BicycleModelEngine>();
+                break;
+            default:
+                m_physics_engine = std::make_unique<LaneZero::BicycleModelEngine>();
+                break;
+            }
+        }
+        else
+        {
+            m_physics_engine.reset();
+        }
+    }
+    return *this;
 }
 
 void Vehicle::update_kinematics(double delta_t)
@@ -52,6 +122,17 @@ void Vehicle::update_kinematics(double delta_t)
     position_s_m = position_s_m + velocity_mps * delta_t +
                    0.5 * acceleration_mps2 * delta_t * delta_t;
     velocity_mps = velocity_mps + acceleration_mps2 * delta_t;
+
+    if (m_physics_engine)
+    {
+        m_control.longitudinal_force_n = acceleration_mps2 * m_physics_parameters.mass_kg;
+        m_physics_state.velocity_x_mps = velocity_mps;
+
+        m_physics_engine->update(m_physics_state, m_control, m_physics_parameters, delta_t);
+
+        velocity_mps = std::sqrt(m_physics_state.velocity_x_mps * m_physics_state.velocity_x_mps +
+                                 m_physics_state.velocity_y_mps * m_physics_state.velocity_y_mps);
+    }
 }
 
 void Vehicle::calculate_control(
@@ -60,3 +141,57 @@ void Vehicle::calculate_control(
 {
     // Placeholder for Phase 2 logic
 }
+
+void Vehicle::set_physics_engine_type(LaneZero::PhysicsEngineType engine_type)
+{
+    switch (engine_type)
+    {
+    case LaneZero::PhysicsEngineType::BicycleModel:
+        m_physics_engine = std::make_unique<LaneZero::BicycleModelEngine>();
+        break;
+    default:
+        m_physics_engine = std::make_unique<LaneZero::BicycleModelEngine>();
+        break;
+    }
+}
+
+LaneZero::PhysicsEngineType Vehicle::get_physics_engine_type() const
+{
+    if (m_physics_engine)
+    {
+        return m_physics_engine->type();
+    }
+    return LaneZero::PhysicsEngineType::BicycleModel;
+}
+
+void Vehicle::set_control(LaneZero::VehicleControl const & control)
+{
+    m_control = control;
+}
+
+LaneZero::VehicleControl Vehicle::get_control() const
+{
+    return m_control;
+}
+
+void Vehicle::set_physics_state(LaneZero::RigidBodyState const & state)
+{
+    m_physics_state = state;
+}
+
+LaneZero::RigidBodyState Vehicle::get_physics_state() const
+{
+    return m_physics_state;
+}
+
+void Vehicle::set_physics_parameters(LaneZero::VehiclePhysicsParameters const & parameters)
+{
+    m_physics_parameters = parameters;
+}
+
+LaneZero::VehiclePhysicsParameters Vehicle::get_physics_parameters() const
+{
+    return m_physics_parameters;
+}
+
+// vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

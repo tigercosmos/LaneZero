@@ -82,14 +82,21 @@ def main():
         f"lane={ego_vehicle.current_lane_id}"
     )
 
+    ego_vehicle.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
     simulation.set_ego_vehicle(ego_vehicle)
     print("   Set as ego vehicle for planning-based control")
+    print("   Physics engine: BicycleModel enabled")
 
     print("\n4. Spawning surrounding traffic:")
     simulation.spawn_traffic(num_vehicles=5)
     vehicles = simulation.get_vehicles()
+    for vehicle in vehicles:
+        if vehicle.id != 0:
+            vehicle.set_physics_engine_type(lz.PhysicsEngineType.BicycleModel)
+
     print(f"   Total vehicles in simulation: {len(vehicles)}")
     print("   (Traffic vehicles use simple control logic)")
+    print("   Physics engine: BicycleModel enabled for all vehicles")
 
     print("\n5. Getting initial world state:")
     world_state = simulation.get_world_state()

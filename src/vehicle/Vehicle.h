@@ -28,8 +28,10 @@
 
 #pragma once
 
+#include <PhysicsEngine.h>
 #include <cstdint>
 #include <vector>
+#include <memory>
 
 namespace LaneZero
 {
@@ -62,10 +64,34 @@ public:
             double length,
             double width);
 
+    Vehicle(Vehicle const & other);
+    Vehicle & operator=(Vehicle const & other);
+
+    Vehicle(Vehicle && other) = default;
+    Vehicle & operator=(Vehicle && other) = default;
+
     void update_kinematics(double delta_t);
 
     virtual void calculate_control(LaneZero::Map const & map,
                                    std::vector<Vehicle *> const & surrounding_vehicles);
 
+    void set_physics_engine_type(LaneZero::PhysicsEngineType engine_type);
+    LaneZero::PhysicsEngineType get_physics_engine_type() const;
+
+    void set_control(LaneZero::VehicleControl const & control);
+    LaneZero::VehicleControl get_control() const;
+
+    void set_physics_state(LaneZero::RigidBodyState const & state);
+    LaneZero::RigidBodyState get_physics_state() const;
+
+    void set_physics_parameters(LaneZero::VehiclePhysicsParameters const & parameters);
+    LaneZero::VehiclePhysicsParameters get_physics_parameters() const;
+
     virtual ~Vehicle() = default;
+
+private:
+    std::unique_ptr<LaneZero::PhysicsEngine> m_physics_engine;
+    LaneZero::RigidBodyState m_physics_state;
+    LaneZero::VehicleControl m_control;
+    LaneZero::VehiclePhysicsParameters m_physics_parameters;
 }; /* end class Vehicle */

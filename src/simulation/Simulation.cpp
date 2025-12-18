@@ -188,6 +188,12 @@ void Simulation::apply(LaneZero::PlanResult const & result)
     if (m_ego_vehicle)
     {
         m_ego_vehicle->acceleration_mps2 = result.acceleration_mps2;
+
+        LaneZero::VehicleControl control;
+        control.steering_angle_rad = result.steering_angle_rad;
+        control.longitudinal_force_n = result.acceleration_mps2 *
+                                       m_ego_vehicle->get_physics_parameters().mass_kg;
+        m_ego_vehicle->set_control(control);
     }
 }
 

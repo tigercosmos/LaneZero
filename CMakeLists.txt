@@ -89,6 +89,7 @@ set(LANEZERO_SOURCES
     src/planner/MotionPlanner.cpp
     src/planner/ControlPlanner.cpp
     src/planner/PlanningOrchestrator.cpp
+    src/physics_engine/BicycleModelEngine.cpp
 )
 
 # Viewer sources (Qt GUI)
@@ -106,6 +107,7 @@ pybind11_add_module(_core
     src/map/pymod/wrap_Map.cpp
     src/simulation/pymod/Wrap_Simulation.cpp
     src/simulation/pymod/Wrap_WorldState.cpp
+    src/physics_engine/pymod/wrap_PhysicsEngine.cpp
 )
 
 target_include_directories(_core PRIVATE
@@ -115,6 +117,7 @@ target_include_directories(_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/simulation
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scenario
     ${CMAKE_CURRENT_SOURCE_DIR}/src/planner
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/physics_engine
     ${rapidjson_SOURCE_DIR}/include
 )
 
