@@ -51,17 +51,13 @@ void wrap_RManager(pybind11::module & mod)
         .def("set_map", &RManager::set_map, pybind11::arg("map"))
         .def("set_vehicles", &RManager::set_vehicles, pybind11::arg("vehicles"))
         .def("set_ego_vehicle_id", &RManager::set_ego_vehicle_id, pybind11::arg("ego_id"))
-        .def("update_view", &RManager::update_view)
-        .def_property_readonly("main_window", &RManager::mainWindow)
-        .def_property_readonly("file_menu", &RManager::fileMenu)
-        .def_property_readonly("simulation_menu", &RManager::simulationMenu)
-        .def_property_readonly("view_menu", &RManager::viewMenu)
-        .def_property_readonly("window_menu", &RManager::windowMenu);
+        .def("update_view", &RManager::update_view);
 }
 
 void wrap_viewer(pybind11::module & mod)
 {
     pybind11::module viewer_mod = mod.def_submodule("viewer", "Qt viewer module");
+    viewer_mod.attr("enable") = true;
 
     wrap_RManager(viewer_mod);
 }

@@ -39,25 +39,25 @@ RManager & RManager::instance()
 }
 
 RManager::RManager()
-    : QObject()
 {
-    m_core = QApplication::instance();
-    static int argc = 1;
-    static char exename[] = "LaneZeroView";
-    static char * argv[] = {exename};
-    if (nullptr == m_core)
-    {
-        m_core = new QApplication(argc, argv);
-    }
-
-    m_main_window = new QMainWindow;
-    m_main_window->setWindowTitle("LaneZero Viewer");
 }
 
 RManager & RManager::setUp()
 {
     if (!m_already_setup)
     {
+        m_core = QApplication::instance();
+        static int argc = 1;
+        static char exename[] = "LaneZeroView";
+        static char * argv[] = {exename};
+        if (nullptr == m_core)
+        {
+            m_core = new QApplication(argc, argv);
+        }
+
+        m_main_window = new QMainWindow;
+        m_main_window->setWindowTitle("LaneZero Viewer");
+
         this->setUpWindow();
         this->setUpMenu();
         m_already_setup = true;

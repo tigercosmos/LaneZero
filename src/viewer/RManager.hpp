@@ -45,13 +45,12 @@ namespace LaneZero
 
 class RenderWidget;
 
-class RManager : public QObject
+class RManager
 {
-    Q_OBJECT
 
 public:
 
-    ~RManager() override;
+    ~RManager();
 
     RManager & setUp();
 
@@ -66,15 +65,46 @@ public:
     QMenu * viewMenu() { return m_view_menu; }
     QMenu * windowMenu() { return m_window_menu; }
 
-    void quit() { m_core->quit(); }
+    void quit()
+    {
+        if (m_core)
+        {
+            m_core->quit();
+        }
+    }
 
-    int exec() { return m_core->exec(); }
+    int exec()
+    {
+        if (m_core)
+        {
+            return m_core->exec();
+        }
+        return -1;
+    }
 
-    void show() { m_main_window->show(); }
+    void show()
+    {
+        if (m_main_window)
+        {
+            m_main_window->show();
+        }
+    }
 
-    void resize(int w, int h) { m_main_window->resize(w, h); }
+    void resize(int w, int h)
+    {
+        if (m_main_window)
+        {
+            m_main_window->resize(w, h);
+        }
+    }
 
-    void setWindowTitle(std::string const & title) { m_main_window->setWindowTitle(QString::fromStdString(title)); }
+    void setWindowTitle(std::string const & title)
+    {
+        if (m_main_window)
+        {
+            m_main_window->setWindowTitle(QString::fromStdString(title));
+        }
+    }
 
     void set_map(Map const & map);
     void set_vehicles(std::vector<Vehicle> const & vehicles);
