@@ -75,6 +75,7 @@ jobs:
           echo "python3 version: $(python3 --version)"
           echo "pytest path: $(which pytest)"
           echo "pytest version: $(pytest --version)"
+          echo "pyside6 path: $(python3 -c 'import PySide6; print(PySide6.__file__)')"
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
