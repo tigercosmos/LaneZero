@@ -155,19 +155,22 @@ if(LANEZERO_USE_QT)
     target_compile_definitions(_core PRIVATE LANEZERO_USE_QT)
     
     if (UNIX AND NOT APPLE)
-        # Link PySide6 library (required for pybind11 Qt integration)
+        # Link PySide6 library (required for pybind11 Qt integration on Linux)
         if(PYSIDE6_LIBRARY)
             target_link_libraries(_core PRIVATE ${PYSIDE6_LIBRARY})
         else()
             message(FATAL_ERROR "PYSIDE6_LIBRARY not set but LANEZERO_USE_QT=ON")
         endif()
         
-        # Link shiboken6 library (required for pybind11 Qt integration)
+        # Link shiboken6 library (required for pybind11 Qt integration on Linux)
         if(SHIBOKEN6_LIBRARY)
             target_link_libraries(_core PRIVATE ${SHIBOKEN6_LIBRARY})
         else()
             message(FATAL_ERROR "SHIBOKEN6_LIBRARY not set but LANEZERO_USE_QT=ON")
         endif()
+        
+        # Enable full PySide6 integration with Qt object exposure
+        target_compile_definitions(_core PRIVATE LANEZERO_PYSIDE6_FULL)
     endif()
 endif()
 
