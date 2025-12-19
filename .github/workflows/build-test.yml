@@ -61,9 +61,9 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          sudo pip3 install setuptools
-          sudo pip3 install pytest flake8 jsonschema
-          sudo pip3 install pyside6==$(qmake6 -query QT_VERSION)
+          python3 -m pip install setuptools
+          python3 -m pip install pytest flake8 jsonschema
+          python3 -m pip install pyside6==$(qmake6 -query QT_VERSION)
 
       - name: Show dependency
         run: |
