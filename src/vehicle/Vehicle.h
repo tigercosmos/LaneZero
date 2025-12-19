@@ -28,10 +28,11 @@
 
 #pragma once
 
-#include <PhysicsEngine.h>
 #include <cstdint>
 #include <vector>
 #include <memory>
+
+#include <LaneZero/physics_engine/PhysicsEngine.h>
 
 namespace LaneZero
 {

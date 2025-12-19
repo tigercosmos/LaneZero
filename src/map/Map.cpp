@@ -26,7 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Map.h>
+#include <LaneZero/map/Map.h>
 
 #include <fstream>
 #include <stdexcept>

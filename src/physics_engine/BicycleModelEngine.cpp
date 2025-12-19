@@ -26,7 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <BicycleModelEngine.h>
+#include <LaneZero/physics_engine/BicycleModelEngine.h>
 #include <cmath>
 #include <algorithm>
 

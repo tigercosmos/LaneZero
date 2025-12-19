@@ -27,9 +27,9 @@
  */
 
 #include <gtest/gtest.h>
-#include <Map.h>
-#include <Vehicle.h>
-#include <Simulation.h>
+#include <LaneZero/map/Map.h>
+#include <LaneZero/vehicle/Vehicle.h>
+#include <LaneZero/simulation/Simulation.h>
 
 TEST(MapTest, Initialization)
 {

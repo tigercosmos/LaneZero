@@ -25,12 +25,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-#include <Map.h>
-#include <Vehicle.h>
 #include <cmath>
 
-#include <BicycleModelEngine.h>
+#include <LaneZero/map/Map.h>
+#include <LaneZero/vehicle/Vehicle.h>
+#include <LaneZero/physics_engine/BicycleModelEngine.h>
 
 Vehicle::Vehicle(int32_t id,
                  VehicleType type,

@@ -28,8 +28,8 @@
 
 #pragma once
 
-#include <Map.h>
-#include <Vehicle.h>
+#include <LaneZero/map/Map.h>
+#include <LaneZero/vehicle/Vehicle.h>
 
 #include <memory>
 #include <vector>

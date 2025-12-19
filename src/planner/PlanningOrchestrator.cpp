@@ -26,12 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "PlanningOrchestrator.h"
-#include "BehaviorPlanner.h"
-#include "MotionPlanner.h"
-#include "ControlPlanner.h"
-#include "WorldState.h"
-#include "Goal.h"
+#include <LaneZero/planner/PlanningOrchestrator.h>
+#include <LaneZero/planner/BehaviorPlanner.h>
+#include <LaneZero/planner/MotionPlanner.h>
+#include <LaneZero/planner/ControlPlanner.h>
+#include <LaneZero/simulation/WorldState.h>
+#include <LaneZero/scenario/Goal.h>
 
 namespace LaneZero
 {

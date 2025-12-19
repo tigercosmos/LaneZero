@@ -26,8 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ControlPlanner.h"
-#include "MotionPlanner.h"
+#include <LaneZero/planner/ControlPlanner.h>
+#include <LaneZero/planner/MotionPlanner.h>
 
 namespace LaneZero
 {

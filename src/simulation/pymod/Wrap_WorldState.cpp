@@ -29,7 +29,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "WorldState.h"
+#include <LaneZero/simulation/WorldState.h>
 
 namespace py = pybind11;
 

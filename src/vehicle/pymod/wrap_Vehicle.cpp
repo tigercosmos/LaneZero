@@ -29,8 +29,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "Vehicle.h"
-#include "Map.h"
+#include <LaneZero/vehicle/Vehicle.h>
+#include <LaneZero/map/Map.h>
 
 namespace py = pybind11;
 

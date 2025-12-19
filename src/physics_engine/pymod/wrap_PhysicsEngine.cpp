@@ -27,8 +27,8 @@
  */
 
 #include <pybind11/pybind11.h>
-#include <PhysicsEngine.h>
-#include <BicycleModelEngine.h>
+#include <LaneZero/physics_engine/PhysicsEngine.h>
+#include <LaneZero/physics_engine/BicycleModelEngine.h>
 
 namespace py = pybind11;
 

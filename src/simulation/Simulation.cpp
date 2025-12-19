@@ -26,9 +26,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Simulation.h"
 #include <cmath>
 #include <random>
+
+#include <LaneZero/simulation/Simulation.h>
 
 Simulation::Simulation()
     : current_time_s(0.0)

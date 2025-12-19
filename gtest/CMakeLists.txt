@@ -22,6 +22,8 @@ add_executable(tests
 )
 
 target_include_directories(tests PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}/../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/map
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/vehicle

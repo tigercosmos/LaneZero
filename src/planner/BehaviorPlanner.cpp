@@ -26,9 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "BehaviorPlanner.h"
-#include "WorldState.h"
-#include "Goal.h"
+#include <LaneZero/planner/BehaviorPlanner.h>
+#include <LaneZero/simulation/WorldState.h>
+#include <LaneZero/scenario/Goal.h>
 
 namespace LaneZero
 {

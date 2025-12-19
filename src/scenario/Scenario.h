@@ -28,8 +28,8 @@
 
 #pragma once
 
-#include "Goal.h"
-#include "WorldState.h"
+#include <LaneZero/scenario/Goal.h>
+#include <LaneZero/simulation/WorldState.h>
 
 namespace LaneZero
 {

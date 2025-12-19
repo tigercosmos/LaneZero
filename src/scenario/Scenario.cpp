@@ -26,7 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Scenario.h"
+#include <LaneZero/scenario/Scenario.h>
 
 namespace LaneZero
 {

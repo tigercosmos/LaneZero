@@ -28,11 +28,11 @@
 
 #pragma once
 
-#include <Map.h>
-#include <Vehicle.h>
-#include <WorldState.h>
-#include <PlanningOrchestrator.h>
-#include <Scenario.h>
+#include <LaneZero/map/Map.h>
+#include <LaneZero/vehicle/Vehicle.h>
+#include <LaneZero/simulation/WorldState.h>
+#include <LaneZero/planner/PlanningOrchestrator.h>
+#include <LaneZero/scenario/Scenario.h>
 
 #include <memory>
 #include <vector>

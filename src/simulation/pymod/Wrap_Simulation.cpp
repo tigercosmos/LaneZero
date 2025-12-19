@@ -29,7 +29,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "Simulation.h"
+#include <LaneZero/simulation/Simulation.h>
 
 namespace py = pybind11;
 

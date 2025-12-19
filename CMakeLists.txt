@@ -5,6 +5,16 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Create LaneZero include directory structure for proper header includes
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include)
+file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp")
+foreach(HEADER ${HEADER_FILES})
+    file(RELATIVE_PATH REL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src" ${HEADER})
+    get_filename_component(HEADER_DIR "${CMAKE_CURRENT_BINARY_DIR}/include/LaneZero/${REL_PATH}" DIRECTORY)
+    file(MAKE_DIRECTORY ${HEADER_DIR})
+    configure_file(${HEADER} "${CMAKE_CURRENT_BINARY_DIR}/include/LaneZero/${REL_PATH}" COPYONLY)
+endforeach()
+
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Option to build with Qt GUI
@@ -127,6 +137,8 @@ pybind11_add_module(_core
 )
 
 target_include_directories(_core PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/map
     ${CMAKE_CURRENT_SOURCE_DIR}/src/vehicle
