@@ -43,14 +43,14 @@ public:
     virtual Goal update_goal(WorldState const & world_state);
 }; /* end class Scenario */
 
-class LaneKeepScenario : public Scenario
+class SimpleScenario : public Scenario
 {
 public:
-    LaneKeepScenario() = default;
-    ~LaneKeepScenario() override = default;
+    SimpleScenario() = default;
+    ~SimpleScenario() override = default;
 
     Goal update_goal(WorldState const & world_state) override;
-}; /* end class LaneKeepScenario */
+}; /* end class SimpleScenario */
 
 } /* end namespace LaneZero */
 

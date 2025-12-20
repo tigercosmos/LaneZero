@@ -59,7 +59,7 @@ public:
 
 private:
     std::unique_ptr<LaneZero::PlanningOrchestrator> m_planner;
-    std::unique_ptr<LaneZero::LaneKeepScenario> m_scenario;
+    std::unique_ptr<LaneZero::SimpleScenario> m_scenario;
     Vehicle * m_ego_vehicle = nullptr;
 }; /* end class Simulation */
 

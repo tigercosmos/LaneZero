@@ -36,7 +36,7 @@ Goal Scenario::update_goal(WorldState const & world_state)
     return Goal();
 }
 
-Goal LaneKeepScenario::update_goal(WorldState const & world_state)
+Goal SimpleScenario::update_goal(WorldState const & world_state)
 {
     if (world_state.ego_vehicle)
     {

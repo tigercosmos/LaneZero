@@ -34,7 +34,7 @@
 Simulation::Simulation()
     : current_time_s(0.0)
     , m_planner(std::make_unique<LaneZero::PlanningOrchestrator>())
-    , m_scenario(std::make_unique<LaneZero::LaneKeepScenario>())
+    , m_scenario(std::make_unique<LaneZero::SimpleScenario>())
 {
 }
 
