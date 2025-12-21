@@ -1,0 +1,124 @@
+{
+    "scenario": {
+        "meta": {
+            "name": "Minimal Cut-In Scenario",
+            "version": "1.0",
+            "description": "Ego drives straight, NPC cuts in from adjacent lane.",
+            "map_ref": {
+                "name": "simple_highway",
+                "version": "1.0"
+            },
+            "units": {
+                "distance": "m",
+                "speed": "m/s",
+                "time": "s",
+                "angle": "rad"
+            }
+        },
+        "entities": [
+            {
+                "name": "ego",
+                "type": "vehicle",
+                "category": "car",
+                "dimensions": {
+                    "length": 4.5,
+                    "width": 1.8,
+                    "height": 1.5
+                }
+            },
+            {
+                "name": "npc",
+                "type": "vehicle",
+                "category": "car",
+                "dimensions": {
+                    "length": 4.5,
+                    "width": 1.8,
+                    "height": 1.5
+                }
+            }
+        ],
+        "init": {
+            "actions": [
+                {
+                    "type": "teleport",
+                    "entity": "ego",
+                    "position": {
+                        "type": "lane",
+                        "road_id": "road_1",
+                        "lane_id": -1,
+                        "s": 10
+                    }
+                },
+                {
+                    "type": "speed",
+                    "entity": "ego",
+                    "target_speed": 15
+                },
+                {
+                    "type": "teleport",
+                    "entity": "npc",
+                    "position": {
+                        "type": "lane",
+                        "road_id": "road_1",
+                        "lane_id": -2,
+                        "s": 25
+                    }
+                },
+                {
+                    "type": "speed",
+                    "entity": "npc",
+                    "target_speed": 16
+                }
+            ]
+        },
+        "storyboard": {
+            "stop_trigger": {
+                "conditions": [
+                    {
+                        "type": "time",
+                        "value": 20,
+                        "comparison": ">="
+                    }
+                ]
+            },
+            "acts": [
+                {
+                    "name": "CutInAct",
+                    "maneuvers": [
+                        {
+                            "name": "NpcCutIn",
+                            "actors": [
+                                "npc"
+                            ],
+                            "events": [
+                                {
+                                    "name": "LaneChangeEvent",
+                                    "priority": "overwrite",
+                                    "start_trigger": {
+                                        "conditions": [
+                                            {
+                                                "type": "distance_to_entity",
+                                                "entity": "npc",
+                                                "target_entity": "ego",
+                                                "distance": 10,
+                                                "comparison": "<="
+                                            }
+                                        ]
+                                    },
+                                    "actions": [
+                                        {
+                                            "type": "lane_change",
+                                            "entity": "npc",
+                                            "target_lane_id": -1,
+                                            "duration": 3
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

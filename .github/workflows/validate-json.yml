@@ -1,4 +1,4 @@
-name: Validate JSON Maps
+name: Validate JSON Maps and Scenarios
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  validate-maps:
+  validate-json:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,3 +27,7 @@ jobs:
       - name: Validate JSON maps
         run: |
           python3 devbin/validate_maps.py
+
+      - name: Validate JSON scenarios
+        run: |
+          python3 devbin/validate_scenarios.py
