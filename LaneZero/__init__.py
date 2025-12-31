@@ -56,6 +56,38 @@ RigidBodyState = _core.RigidBodyState
 VehicleControl = _core.VehicleControl
 VehiclePhysicsParameters = _core.VehiclePhysicsParameters
 
+# Export scenario classes
+WorldPosition = _core.WorldPosition
+LanePosition = _core.LanePosition
+RoadPosition = _core.RoadPosition
+EntityDimensions = _core.EntityDimensions
+EntityPerformance = _core.EntityPerformance
+EntityType = _core.EntityType
+ScenarioEntity = _core.ScenarioEntity
+ConditionType = _core.ConditionType
+ComparisonOperator = _core.ComparisonOperator
+Condition = _core.Condition
+TriggerRule = _core.TriggerRule
+Trigger = _core.Trigger
+ActionType = _core.ActionType
+SpeedDynamics = _core.SpeedDynamics
+TrajectoryPoint = _core.TrajectoryPoint
+Trajectory = _core.Trajectory
+Route = _core.Route
+ScenarioAction = _core.ScenarioAction
+EventPriority = _core.EventPriority
+EventState = _core.EventState
+Event = _core.Event
+Maneuver = _core.Maneuver
+Act = _core.Act
+Storyboard = _core.Storyboard
+ScenarioMeta = _core.ScenarioMeta
+ScenarioInit = _core.ScenarioInit
+Goal = _core.Goal
+Scenario = _core.Scenario
+SimpleScenario = _core.SimpleScenario
+WorldState = _core.WorldState
+
 __all__ = [
     "Vehicle",
     "VehicleType",
@@ -72,6 +104,36 @@ __all__ = [
     "RigidBodyState",
     "VehicleControl",
     "VehiclePhysicsParameters",
+    "WorldPosition",
+    "LanePosition",
+    "RoadPosition",
+    "EntityDimensions",
+    "EntityPerformance",
+    "EntityType",
+    "ScenarioEntity",
+    "ConditionType",
+    "ComparisonOperator",
+    "Condition",
+    "TriggerRule",
+    "Trigger",
+    "ActionType",
+    "SpeedDynamics",
+    "TrajectoryPoint",
+    "Trajectory",
+    "Route",
+    "ScenarioAction",
+    "EventPriority",
+    "EventState",
+    "Event",
+    "Maneuver",
+    "Act",
+    "Storyboard",
+    "ScenarioMeta",
+    "ScenarioInit",
+    "Goal",
+    "Scenario",
+    "SimpleScenario",
+    "WorldState",
     "viewer",
 ]
 

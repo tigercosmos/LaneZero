@@ -39,10 +39,12 @@ void wrap_WorldState(py::module & module)
         .def(py::init<>())
         .def_readwrite("world_map", &LaneZero::WorldState::world_map)
         .def_readwrite("current_time_s", &LaneZero::WorldState::current_time_s)
-        .def_property("ego_vehicle", [](LaneZero::WorldState & self) -> Vehicle *
+        .def_property("ego_vehicle",
+                      [](LaneZero::WorldState & self) -> Vehicle *
                       { return self.ego_vehicle.get(); },
                       [](LaneZero::WorldState & self, Vehicle const & vehicle)
-                      { self.ego_vehicle = std::make_unique<Vehicle>(vehicle); })
+                      { self.ego_vehicle = std::make_unique<Vehicle>(vehicle); },
+                      py::return_value_policy::reference)
         .def("get_other_vehicles", [](LaneZero::WorldState & self)
              {
                  std::vector<Vehicle> vehicle_copies;
@@ -54,7 +56,22 @@ void wrap_WorldState(py::module & module)
                      }
                  }
                  return vehicle_copies; },
-             "Get list of all other vehicles (returns copies)");
+             "Get list of all other vehicles (returns copies)")
+        .def("add_vehicle", [](LaneZero::WorldState & self, Vehicle const & vehicle)
+             { self.vehicles.push_back(std::make_unique<Vehicle>(vehicle)); },
+             "Add a vehicle to the world state")
+        .def("get_vehicle_count", [](LaneZero::WorldState & self)
+             { return self.vehicles.size(); },
+             "Get the number of vehicles in the world state")
+        .def("get_vehicle", [](LaneZero::WorldState & self, size_t index) -> Vehicle *
+             {
+                 if (index < self.vehicles.size())
+                 {
+                     return self.vehicles[index].get();
+                 }
+                 return nullptr; },
+             "Get a vehicle by index",
+             py::return_value_policy::reference);
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:
