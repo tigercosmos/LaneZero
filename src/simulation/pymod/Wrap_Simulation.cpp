@@ -72,6 +72,62 @@ void wrap_Simulation(py::module & module)
              py::arg("vehicle"),
              "Add a copy of a vehicle to the simulation")
         .def("get_world_state", &Simulation::get_world_state, "Get current world state from simulation")
+        .def("set_vehicle_lane", [](Simulation & self, int32_t vehicle_id, int32_t lane_id)
+             {
+                 for (auto * vehicle : self.vehicles)
+                 {
+                     if (vehicle != nullptr && vehicle->id == vehicle_id)
+                     {
+                         vehicle->current_lane_id = lane_id;
+                         return true;
+                     }
+                 }
+                 return false; },
+             py::arg("vehicle_id"),
+             py::arg("lane_id"),
+             "Set the lane ID for a specific vehicle by ID. Returns true if vehicle found.")
+        .def("set_vehicle_position", [](Simulation & self, int32_t vehicle_id, double position_s_m)
+             {
+                 for (auto * vehicle : self.vehicles)
+                 {
+                     if (vehicle != nullptr && vehicle->id == vehicle_id)
+                     {
+                         vehicle->position_s_m = position_s_m;
+                         return true;
+                     }
+                 }
+                 return false; },
+             py::arg("vehicle_id"),
+             py::arg("position_s_m"),
+             "Set the position for a specific vehicle by ID. Returns true if vehicle found.")
+        .def("set_vehicle_lateral_offset", [](Simulation & self, int32_t vehicle_id, double lateral_offset_m)
+             {
+                 for (auto * vehicle : self.vehicles)
+                 {
+                     if (vehicle != nullptr && vehicle->id == vehicle_id)
+                     {
+                         vehicle->lateral_offset_m = lateral_offset_m;
+                         return true;
+                     }
+                 }
+                 return false; },
+             py::arg("vehicle_id"),
+             py::arg("lateral_offset_m"),
+             "Set the lateral offset for a specific vehicle by ID. Returns true if vehicle found.")
+        .def("set_vehicle_velocity", [](Simulation & self, int32_t vehicle_id, double velocity_mps)
+             {
+                 for (auto * vehicle : self.vehicles)
+                 {
+                     if (vehicle != nullptr && vehicle->id == vehicle_id)
+                     {
+                         vehicle->velocity_mps = velocity_mps;
+                         return true;
+                     }
+                 }
+                 return false; },
+             py::arg("vehicle_id"),
+             py::arg("velocity_mps"),
+             "Set the velocity for a specific vehicle by ID. Returns true if vehicle found.")
         .def("set_ego_vehicle", [](Simulation & self, Vehicle const & vehicle)
              {
                  Vehicle * new_vehicle = new Vehicle(vehicle);

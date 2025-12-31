@@ -57,6 +57,7 @@ class SimulationViewer:
         self.delta_t = 0.1
         self.is_running = False
         self.is_paused = False
+        self.step_callback = None
 
         self.rmgr.set_up()
         self.rmgr.set_window_title(title)
@@ -96,7 +97,11 @@ class SimulationViewer:
         if self.is_paused or not self.is_running:
             return
 
-        self.simulation.step(self.delta_t)
+        if self.step_callback:
+            self.step_callback(self.simulation, self.delta_t)
+        else:
+            self.simulation.step(self.delta_t)
+
         self.update_vehicles()
 
         if self.simulation.check_collision():
@@ -118,7 +123,8 @@ class SimulationViewer:
         if self.timer:
             self.timer.stop()
 
-    def run(self, duration_s=None, delta_t_s=0.1):
+    def run(self, duration_s=None, delta_t_s=0.1, step_callback=None):
+        self.step_callback = step_callback
         self.start_simulation(duration_s, delta_t_s)
         return self.rmgr.exec()
 

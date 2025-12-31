@@ -56,6 +56,7 @@ void wrap_Vehicle(py::module & module)
         .def_readwrite("velocity_mps", &Vehicle::velocity_mps)
         .def_readwrite("acceleration_mps2", &Vehicle::acceleration_mps2)
         .def_readwrite("current_lane_id", &Vehicle::current_lane_id)
+        .def_readwrite("lateral_offset_m", &Vehicle::lateral_offset_m)
         .def_readwrite("length_m", &Vehicle::length_m)
         .def_readwrite("width_m", &Vehicle::width_m)
         .def("update_kinematics",

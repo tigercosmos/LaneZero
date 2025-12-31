@@ -29,15 +29,50 @@
 #include <LaneZero/planner/MotionPlanner.h>
 #include <LaneZero/planner/BehaviorPlanner.h>
 
+#include <cmath>
+#include <algorithm>
+
 namespace LaneZero
 {
 
-Trajectory MotionPlanner::plan(BehaviorDecision const & decision, double delta_t_s)
+MotionTrajectory MotionPlanner::plan(BehaviorDecision const & decision, double delta_t_s)
 {
-    Trajectory trajectory;
-    trajectory.positions_s_m.push_back(0.0);
-    trajectory.velocities_mps.push_back(decision.target_speed_mps);
-    trajectory.timestamps_s.push_back(0.0);
+    MotionTrajectory trajectory;
+
+    double const planning_horizon_s = 5.0;
+    double const max_acceleration_mps2 = 3.0;
+    double const max_deceleration_mps2 = -5.0;
+
+    int32_t num_steps = static_cast<int32_t>(planning_horizon_s / delta_t_s);
+
+    double current_position = 0.0;
+    double current_velocity = decision.target_speed_mps;
+
+    for (int32_t i = 0; i < num_steps; ++i)
+    {
+        double time = i * delta_t_s;
+
+        double acceleration = 0.0;
+        if (decision.state == BehaviorState::Emergency)
+        {
+            acceleration = max_deceleration_mps2;
+        }
+        else if (decision.state == BehaviorState::CutInResponse)
+        {
+            acceleration = std::max(max_deceleration_mps2,
+                                    (decision.target_speed_mps - current_velocity) / planning_horizon_s);
+        }
+
+        current_velocity += acceleration * delta_t_s;
+        current_velocity = std::max(0.0, std::min(current_velocity, decision.target_speed_mps * 1.2));
+
+        current_position += current_velocity * delta_t_s;
+
+        trajectory.positions_s_m.push_back(current_position);
+        trajectory.velocities_mps.push_back(current_velocity);
+        trajectory.timestamps_s.push_back(time);
+    }
+
     return trajectory;
 }
 

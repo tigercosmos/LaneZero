@@ -157,11 +157,25 @@ void RenderWidget::render_lane_boundaries(QPainter & painter, Road const & road)
 
     for (auto const & lane_section : road.lane_sections)
     {
+        double cumulative_offset_left = 0.0;
+        double cumulative_offset_right = 0.0;
+
         for (auto const & lane : lane_section.lanes)
         {
             if (lane.lane_id == 0)
             {
                 continue;
+            }
+
+            double lane_width = lane.width.empty() ? 3.0 : lane.width[0].a;
+
+            if (lane.lane_id > 0)
+            {
+                cumulative_offset_left += lane_width;
+            }
+            else
+            {
+                cumulative_offset_right += lane_width;
             }
 
             QPen pen;
@@ -179,8 +193,7 @@ void RenderWidget::render_lane_boundaries(QPainter & painter, Road const & road)
             }
             painter.setPen(pen);
 
-            double lane_width = lane.width.empty() ? 3.0 : lane.width[0].a;
-            int32_t direction = (lane.lane_id > 0) ? 1 : -1;
+            double offset = (lane.lane_id > 0) ? cumulative_offset_left : -cumulative_offset_right;
 
             for (size_t it = 0; it < ref_line.size() - 1; ++it)
             {
@@ -195,8 +208,6 @@ void RenderWidget::render_lane_boundaries(QPainter & painter, Road const & road)
 
                 double normal_x = -dy / length;
                 double normal_y = dx / length;
-
-                double offset = lane_width * direction;
 
                 double x1 = m_offset_x + (ref_line[it].x + normal_x * offset) * m_scale;
                 double y1 = m_offset_y - (ref_line[it].y + normal_y * offset) * m_scale;
@@ -232,6 +243,8 @@ void RenderWidget::render_vehicle_box(QPainter & painter, Vehicle const & vehicl
 {
     auto [pos_x, pos_y] = interpolate_position(road.reference_line, vehicle.position_s_m, road.length);
     auto [offset_x, offset_y] = calculate_lane_offset(road, vehicle.current_lane_id, vehicle.position_s_m);
+
+    offset_y += vehicle.lateral_offset_m;
 
     pos_x += offset_x;
     pos_y += offset_y;
@@ -320,22 +333,46 @@ std::pair<double, double> RenderWidget::calculate_lane_offset(
     {
         if (position_s >= lane_section.s_start && position_s <= lane_section.s_end)
         {
+            double cumulative_offset = 0.0;
+
             for (auto const & lane : lane_section.lanes)
             {
-                if (lane.lane_id == lane_id)
+                if (lane.lane_id == 0)
                 {
-                    double lane_width = lane.width.empty() ? 3.0 : lane.width[0].a;
-                    double offset = lane_width * 0.5;
+                    continue;
+                }
 
-                    if (lane_id > 0)
+                double lane_width = lane.width.empty() ? 3.0 : lane.width[0].a;
+
+                if (lane_id > 0)
+                {
+                    if (lane.lane_id > 0 && lane.lane_id <= lane_id)
                     {
-                        return {0.0, offset};
+                        if (lane.lane_id == lane_id)
+                        {
+                            cumulative_offset += lane_width * 0.5;
+                            return {0.0, cumulative_offset};
+                        }
+                        else
+                        {
+                            cumulative_offset += lane_width;
+                        }
                     }
-                    else if (lane_id < 0)
+                }
+                else if (lane_id < 0)
+                {
+                    if (lane.lane_id < 0 && lane.lane_id >= lane_id)
                     {
-                        return {0.0, -offset};
+                        if (lane.lane_id == lane_id)
+                        {
+                            cumulative_offset += lane_width * 0.5;
+                            return {0.0, -cumulative_offset};
+                        }
+                        else
+                        {
+                            cumulative_offset += lane_width;
+                        }
                     }
-                    break;
                 }
             }
         }

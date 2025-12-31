@@ -44,6 +44,7 @@ Vehicle::Vehicle(int32_t id,
     , velocity_mps(velocity)
     , acceleration_mps2(0.0)
     , current_lane_id(lane_id)
+    , lateral_offset_m(0.0)
     , length_m(length)
     , width_m(width)
     , m_physics_engine(nullptr)
@@ -58,6 +59,7 @@ Vehicle::Vehicle(Vehicle const & other)
     , velocity_mps(other.velocity_mps)
     , acceleration_mps2(other.acceleration_mps2)
     , current_lane_id(other.current_lane_id)
+    , lateral_offset_m(other.lateral_offset_m)
     , length_m(other.length_m)
     , width_m(other.width_m)
     , m_physics_state(other.m_physics_state)
@@ -89,6 +91,7 @@ Vehicle & Vehicle::operator=(Vehicle const & other)
         velocity_mps = other.velocity_mps;
         acceleration_mps2 = other.acceleration_mps2;
         current_lane_id = other.current_lane_id;
+        lateral_offset_m = other.lateral_offset_m;
         length_m = other.length_m;
         width_m = other.width_m;
         m_physics_state = other.m_physics_state;

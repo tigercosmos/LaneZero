@@ -88,6 +88,13 @@ Scenario = _core.Scenario
 SimpleScenario = _core.SimpleScenario
 WorldState = _core.WorldState
 
+# Export planner classes
+BehaviorState = _core.BehaviorState
+BehaviorDecision = _core.BehaviorDecision
+BehaviorPlanner = _core.BehaviorPlanner
+MotionTrajectory = _core.MotionTrajectory
+MotionPlanner = _core.MotionPlanner
+
 __all__ = [
     "Vehicle",
     "VehicleType",
@@ -134,6 +141,11 @@ __all__ = [
     "Scenario",
     "SimpleScenario",
     "WorldState",
+    "BehaviorState",
+    "BehaviorDecision",
+    "BehaviorPlanner",
+    "MotionTrajectory",
+    "MotionPlanner",
     "viewer",
 ]
 

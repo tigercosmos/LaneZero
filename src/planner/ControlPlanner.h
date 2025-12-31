@@ -31,7 +31,7 @@
 namespace LaneZero
 {
 
-class Trajectory;
+class MotionTrajectory;
 
 struct ControlCommand
 {
@@ -45,7 +45,7 @@ public:
     ControlPlanner() = default;
     ~ControlPlanner() = default;
 
-    ControlCommand plan(Trajectory const & trajectory, double delta_t_s);
+    ControlCommand plan(MotionTrajectory const & trajectory, double delta_t_s);
 }; /* end class ControlPlanner */
 
 } /* end namespace LaneZero */

@@ -30,6 +30,9 @@
 #include <LaneZero/simulation/WorldState.h>
 #include <LaneZero/scenario/Goal.h>
 
+#include <cmath>
+#include <algorithm>
+
 namespace LaneZero
 {
 
@@ -38,6 +41,54 @@ BehaviorDecision BehaviorPlanner::plan(WorldState const & world_state, Goal cons
     BehaviorDecision decision;
     decision.target_lane_id = goal.target_lane_id;
     decision.target_speed_mps = goal.desired_speed_mps;
+    decision.state = BehaviorState::KeepLane;
+    decision.cut_in_detected = false;
+
+    if (!world_state.ego_vehicle)
+    {
+        return decision;
+    }
+
+    auto const & ego = world_state.ego_vehicle;
+    double const safe_distance_threshold = 15.0;
+    double const emergency_distance_threshold = 10.0;
+    double const safe_speed_reduction_factor = 0.7;
+    double const emergency_speed_reduction_factor = 0.4;
+
+    for (auto const & other_vehicle_ptr : world_state.vehicles)
+    {
+        if (!other_vehicle_ptr)
+        {
+            continue;
+        }
+
+        auto const & other = other_vehicle_ptr;
+
+        if (other->current_lane_id == ego->current_lane_id)
+        {
+            double longitudinal_distance = other->position_s_m - ego->position_s_m;
+
+            if (longitudinal_distance > 0 && longitudinal_distance < safe_distance_threshold)
+            {
+                decision.cut_in_detected = true;
+                decision.safe_distance_m = longitudinal_distance;
+
+                if (longitudinal_distance < emergency_distance_threshold)
+                {
+                    decision.state = BehaviorState::Emergency;
+                    decision.target_speed_mps = other->velocity_mps;
+                }
+                else
+                {
+                    decision.state = BehaviorState::CutInResponse;
+                    decision.target_speed_mps = other->velocity_mps;
+                }
+
+                break;
+            }
+        }
+    }
+
     return decision;
 }
 

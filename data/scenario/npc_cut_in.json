@@ -3,7 +3,7 @@
         "meta": {
             "name": "Minimal Cut-In Scenario",
             "version": "1.0",
-            "description": "Ego drives straight, NPC cuts in from adjacent lane.",
+            "description": "Ego drives at 20 m/s in lane -1. NPC starts 15m ahead in lane -2, traveling at 15 m/s. Ego catches up and NPC cuts into ego's lane.",
             "map_ref": {
                 "name": "simple_highway",
                 "version": "1.0"
@@ -52,7 +52,7 @@
                 {
                     "type": "speed",
                     "entity": "ego",
-                    "target_speed": 15
+                    "target_speed": 20
                 },
                 {
                     "type": "teleport",
@@ -67,7 +67,7 @@
                 {
                     "type": "speed",
                     "entity": "npc",
-                    "target_speed": 16
+                    "target_speed": 15
                 }
             ]
         },

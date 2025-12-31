@@ -92,7 +92,9 @@ def test_scenario_loading():
     print(f"\n4. Scenario entities ({len(entities)} total):")
     for entity in entities:
         print(f"   - {entity.name} ({entity.type})")
-        print(f"     Dimensions: {entity.dimensions.length}m x {entity.dimensions.width}m x {entity.dimensions.height}m")
+        print(
+            f"     Dimensions: {entity.dimensions.length}m x {entity.dimensions.width}m x {entity.dimensions.height}m"
+        )
 
     # Display initialization actions
     init_actions = scenario.init().actions
@@ -193,18 +195,24 @@ def test_scenario_simulation():
     print("\n7. Initial vehicle states:")
     if world_state.ego_vehicle:
         ego = world_state.ego_vehicle
-        print(f"   Ego: position={ego.position_s_m:.1f}m, velocity={ego.velocity_mps:.1f}m/s, lane={ego.current_lane_id}")
+        print(
+            f"   Ego: position={ego.position_s_m:.1f}m, velocity={ego.velocity_mps:.1f}m/s, lane={ego.current_lane_id}"
+        )
     for i in range(world_state.get_vehicle_count()):
         vehicle = world_state.get_vehicle(i)
         if vehicle:
-            print(f"   NPC {vehicle.id}: position={vehicle.position_s_m:.1f}m, velocity={vehicle.velocity_mps:.1f}m/s, lane={vehicle.current_lane_id}")
+            print(
+                f"   NPC {vehicle.id}: position={vehicle.position_s_m:.1f}m, velocity={vehicle.velocity_mps:.1f}m/s, lane={vehicle.current_lane_id}"
+            )
 
     # Simulate for a few steps
     print("\n8. Running simulation steps:")
     delta_t = 0.1
     max_time = 5.0
 
-    while world_state.current_time_s < max_time and not scenario.is_complete(world_state):
+    while world_state.current_time_s < max_time and not scenario.is_complete(
+        world_state
+    ):
         scenario.update(world_state)
         world_state.current_time_s += delta_t
 
@@ -212,10 +220,12 @@ def test_scenario_simulation():
             print(f"   Time: {world_state.current_time_s:.1f}s")
             if world_state.ego_vehicle:
                 ego = world_state.ego_vehicle
-                print(f"     Ego: position={ego.position_s_m:.1f}m, lane={ego.current_lane_id}")
+                print(
+                    f"     Ego: position={ego.position_s_m:.1f}m, lane={ego.current_lane_id}"
+                )
 
     print("\n9. Simulation completed")
-    
+
     print("10. Cleaning up entity-vehicle mappings...")
     scenario.clear_entity_vehicles()
     print("11. Entity-vehicle mappings cleared")

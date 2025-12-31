@@ -135,6 +135,7 @@ pybind11_add_module(_core
     src/simulation/pymod/Wrap_WorldState.cpp
     src/physics_engine/pymod/wrap_PhysicsEngine.cpp
     src/scenario/pymod/wrap_Scenario.cpp
+    src/planner/pymod/wrap_planners.cpp
 )
 
 target_include_directories(_core PRIVATE

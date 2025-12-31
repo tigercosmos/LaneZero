@@ -39,8 +39,7 @@ void wrap_WorldState(py::module & module)
         .def(py::init<>())
         .def_readwrite("world_map", &LaneZero::WorldState::world_map)
         .def_readwrite("current_time_s", &LaneZero::WorldState::current_time_s)
-        .def_property("ego_vehicle",
-                      [](LaneZero::WorldState & self) -> Vehicle *
+        .def_property("ego_vehicle", [](LaneZero::WorldState & self) -> Vehicle *
                       { return self.ego_vehicle.get(); },
                       [](LaneZero::WorldState & self, Vehicle const & vehicle)
                       { self.ego_vehicle = std::make_unique<Vehicle>(vehicle); },

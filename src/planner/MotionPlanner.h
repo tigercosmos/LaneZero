@@ -35,12 +35,12 @@ namespace LaneZero
 
 class BehaviorDecision;
 
-struct Trajectory
+struct MotionTrajectory
 {
     std::vector<double> positions_s_m;
     std::vector<double> velocities_mps;
     std::vector<double> timestamps_s;
-}; /* end struct Trajectory */
+}; /* end struct MotionTrajectory */
 
 class MotionPlanner
 {
@@ -48,7 +48,7 @@ public:
     MotionPlanner() = default;
     ~MotionPlanner() = default;
 
-    Trajectory plan(BehaviorDecision const & decision, double delta_t_s);
+    MotionTrajectory plan(BehaviorDecision const & decision, double delta_t_s);
 }; /* end class MotionPlanner */
 
 } /* end namespace LaneZero */

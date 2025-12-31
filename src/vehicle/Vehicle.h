@@ -54,6 +54,7 @@ public:
     double velocity_mps;
     double acceleration_mps2;
     int32_t current_lane_id;
+    double lateral_offset_m;
     double length_m;
     double width_m;
 

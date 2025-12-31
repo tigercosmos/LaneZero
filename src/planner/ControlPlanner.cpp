@@ -32,7 +32,7 @@
 namespace LaneZero
 {
 
-ControlCommand ControlPlanner::plan(Trajectory const & trajectory, double delta_t_s)
+ControlCommand ControlPlanner::plan(MotionTrajectory const & trajectory, double delta_t_s)
 {
     ControlCommand command;
     if (!trajectory.velocities_mps.empty())

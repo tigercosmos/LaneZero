@@ -90,111 +90,111 @@ bool Condition::evaluate(WorldState const & world_state, std::map<std::string, i
 {
     switch (type)
     {
-        case ConditionType::Time:
+    case ConditionType::Time:
+    {
+        if (!value.has_value() || !comparison.has_value())
         {
-            if (!value.has_value() || !comparison.has_value())
-            {
-                return false;
-            }
-
-            double current_time = world_state.current_time_s;
-            double target_value = value.value();
-
-            switch (comparison.value())
-            {
-                case ComparisonOperator::LessThan:
-                    return current_time < target_value;
-                case ComparisonOperator::LessEqual:
-                    return current_time <= target_value;
-                case ComparisonOperator::GreaterThan:
-                    return current_time > target_value;
-                case ComparisonOperator::GreaterEqual:
-                    return current_time >= target_value;
-                case ComparisonOperator::Equal:
-                    return std::abs(current_time - target_value) < 0.01;
-                case ComparisonOperator::NotEqual:
-                    return std::abs(current_time - target_value) >= 0.01;
-                default:
-                    return false;
-            }
+            return false;
         }
-        case ConditionType::DistanceToEntity:
+
+        double current_time = world_state.current_time_s;
+        double target_value = value.value();
+
+        switch (comparison.value())
         {
-            if (!entity.has_value() || !target_entity.has_value() || !distance.has_value() || !comparison.has_value())
-            {
-                return false;
-            }
-
-            Vehicle * entity_vehicle = nullptr;
-            Vehicle * target_vehicle = nullptr;
-
-            auto it1 = entity_vehicle_ids.find(entity.value());
-            if (it1 != entity_vehicle_ids.end())
-            {
-                int32_t vehicle_id = it1->second;
-                if (world_state.ego_vehicle && world_state.ego_vehicle->id == vehicle_id)
-                {
-                    entity_vehicle = world_state.ego_vehicle.get();
-                }
-                else
-                {
-                    for (auto const & v : world_state.vehicles)
-                    {
-                        if (v && v->id == vehicle_id)
-                        {
-                            entity_vehicle = v.get();
-                            break;
-                        }
-                    }
-                }
-            }
-
-            auto it2 = entity_vehicle_ids.find(target_entity.value());
-            if (it2 != entity_vehicle_ids.end())
-            {
-                int32_t vehicle_id = it2->second;
-                if (world_state.ego_vehicle && world_state.ego_vehicle->id == vehicle_id)
-                {
-                    target_vehicle = world_state.ego_vehicle.get();
-                }
-                else
-                {
-                    for (auto const & v : world_state.vehicles)
-                    {
-                        if (v && v->id == vehicle_id)
-                        {
-                            target_vehicle = v.get();
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!entity_vehicle || !target_vehicle)
-            {
-                return false;
-            }
-
-            double distance_value = std::abs(entity_vehicle->position_s_m - target_vehicle->position_s_m);
-
-            switch (comparison.value())
-            {
-                case ComparisonOperator::LessThan:
-                    return distance_value < distance.value();
-                case ComparisonOperator::LessEqual:
-                    return distance_value <= distance.value();
-                case ComparisonOperator::GreaterThan:
-                    return distance_value > distance.value();
-                case ComparisonOperator::GreaterEqual:
-                    return distance_value >= distance.value();
-                case ComparisonOperator::Equal:
-                    return std::abs(distance_value - distance.value()) < 0.1;
-                default:
-                    return false;
-            }
-        }
+        case ComparisonOperator::LessThan:
+            return current_time < target_value;
+        case ComparisonOperator::LessEqual:
+            return current_time <= target_value;
+        case ComparisonOperator::GreaterThan:
+            return current_time > target_value;
+        case ComparisonOperator::GreaterEqual:
+            return current_time >= target_value;
+        case ComparisonOperator::Equal:
+            return std::abs(current_time - target_value) < 0.01;
+        case ComparisonOperator::NotEqual:
+            return std::abs(current_time - target_value) >= 0.01;
         default:
             return false;
+        }
+    }
+    case ConditionType::DistanceToEntity:
+    {
+        if (!entity.has_value() || !target_entity.has_value() || !distance.has_value() || !comparison.has_value())
+        {
+            return false;
+        }
+
+        Vehicle * entity_vehicle = nullptr;
+        Vehicle * target_vehicle = nullptr;
+
+        auto it1 = entity_vehicle_ids.find(entity.value());
+        if (it1 != entity_vehicle_ids.end())
+        {
+            int32_t vehicle_id = it1->second;
+            if (world_state.ego_vehicle && world_state.ego_vehicle->id == vehicle_id)
+            {
+                entity_vehicle = world_state.ego_vehicle.get();
+            }
+            else
+            {
+                for (auto const & v : world_state.vehicles)
+                {
+                    if (v && v->id == vehicle_id)
+                    {
+                        entity_vehicle = v.get();
+                        break;
+                    }
+                }
+            }
+        }
+
+        auto it2 = entity_vehicle_ids.find(target_entity.value());
+        if (it2 != entity_vehicle_ids.end())
+        {
+            int32_t vehicle_id = it2->second;
+            if (world_state.ego_vehicle && world_state.ego_vehicle->id == vehicle_id)
+            {
+                target_vehicle = world_state.ego_vehicle.get();
+            }
+            else
+            {
+                for (auto const & v : world_state.vehicles)
+                {
+                    if (v && v->id == vehicle_id)
+                    {
+                        target_vehicle = v.get();
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!entity_vehicle || !target_vehicle)
+        {
+            return false;
+        }
+
+        double distance_value = std::abs(entity_vehicle->position_s_m - target_vehicle->position_s_m);
+
+        switch (comparison.value())
+        {
+        case ComparisonOperator::LessThan:
+            return distance_value < distance.value();
+        case ComparisonOperator::LessEqual:
+            return distance_value <= distance.value();
+        case ComparisonOperator::GreaterThan:
+            return distance_value > distance.value();
+        case ComparisonOperator::GreaterEqual:
+            return distance_value >= distance.value();
+        case ComparisonOperator::Equal:
+            return std::abs(distance_value - distance.value()) < 0.1;
+        default:
+            return false;
+        }
+    }
+    default:
+        return false;
     }
 }
 
@@ -207,15 +207,13 @@ bool Trigger::is_triggered(WorldState const & world_state, std::map<std::string,
 
     if (rule == TriggerRule::All)
     {
-        return std::all_of(conditions.begin(), conditions.end(), [&world_state, &entity_vehicle_ids](Condition const & cond) {
-            return cond.evaluate(world_state, entity_vehicle_ids);
-        });
+        return std::all_of(conditions.begin(), conditions.end(), [&world_state, &entity_vehicle_ids](Condition const & cond)
+                           { return cond.evaluate(world_state, entity_vehicle_ids); });
     }
     else
     {
-        return std::any_of(conditions.begin(), conditions.end(), [&world_state, &entity_vehicle_ids](Condition const & cond) {
-            return cond.evaluate(world_state, entity_vehicle_ids);
-        });
+        return std::any_of(conditions.begin(), conditions.end(), [&world_state, &entity_vehicle_ids](Condition const & cond)
+                           { return cond.evaluate(world_state, entity_vehicle_ids); });
     }
 }
 
@@ -264,37 +262,37 @@ void ScenarioAction::execute(WorldState & world_state, std::map<std::string, int
 
     switch (type)
     {
-        case ActionType::Teleport:
+    case ActionType::Teleport:
+    {
+        if (position.has_value())
         {
-            if (position.has_value())
+            if (std::holds_alternative<LanePosition>(position.value()))
             {
-                if (std::holds_alternative<LanePosition>(position.value()))
-                {
-                    LanePosition const & lane_pos = std::get<LanePosition>(position.value());
-                    target_vehicle->position_s_m = lane_pos.s;
-                    target_vehicle->current_lane_id = lane_pos.lane_id;
-                }
+                LanePosition const & lane_pos = std::get<LanePosition>(position.value());
+                target_vehicle->position_s_m = lane_pos.s;
+                target_vehicle->current_lane_id = lane_pos.lane_id;
             }
-            break;
         }
-        case ActionType::Speed:
+        break;
+    }
+    case ActionType::Speed:
+    {
+        if (target_speed.has_value())
         {
-            if (target_speed.has_value())
-            {
-                target_vehicle->velocity_mps = target_speed.value();
-            }
-            break;
+            target_vehicle->velocity_mps = target_speed.value();
         }
-        case ActionType::LaneChange:
+        break;
+    }
+    case ActionType::LaneChange:
+    {
+        if (target_lane_id.has_value())
         {
-            if (target_lane_id.has_value())
-            {
-                target_vehicle->current_lane_id = target_lane_id.value();
-            }
-            break;
+            target_vehicle->current_lane_id = target_lane_id.value();
         }
-        default:
-            break;
+        break;
+    }
+    default:
+        break;
     }
 }
 
@@ -307,27 +305,27 @@ void Event::update(WorldState & world_state, std::map<std::string, int32_t> cons
 {
     switch (state)
     {
-        case EventState::Standby:
+    case EventState::Standby:
+    {
+        if (start_trigger.is_triggered(world_state, entity_vehicle_ids))
         {
-            if (start_trigger.is_triggered(world_state, entity_vehicle_ids))
+            state = EventState::Running;
+            start_time = world_state.current_time_s;
+            for (auto & action : actions)
             {
-                state = EventState::Running;
-                start_time = world_state.current_time_s;
-                for (auto & action : actions)
-                {
-                    action.execute(world_state, entity_vehicle_ids);
-                }
+                action.execute(world_state, entity_vehicle_ids);
             }
-            break;
         }
-        case EventState::Running:
-        {
-            state = EventState::Complete;
-            break;
-        }
-        case EventState::Complete:
-        default:
-            break;
+        break;
+    }
+    case EventState::Running:
+    {
+        state = EventState::Complete;
+        break;
+    }
+    case EventState::Complete:
+    default:
+        break;
     }
 }
 

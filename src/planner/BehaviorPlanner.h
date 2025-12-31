@@ -36,10 +36,20 @@ namespace LaneZero
 class WorldState;
 class Goal;
 
+enum class BehaviorState
+{
+    KeepLane,
+    CutInResponse,
+    Emergency
+}; /* end enum class BehaviorState */
+
 struct BehaviorDecision
 {
     int32_t target_lane_id = 0;
     double target_speed_mps = 0.0;
+    BehaviorState state = BehaviorState::KeepLane;
+    bool cut_in_detected = false;
+    double safe_distance_m = 10.0;
 }; /* end struct BehaviorDecision */
 
 class BehaviorPlanner

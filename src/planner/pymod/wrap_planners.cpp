@@ -26,37 +26,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <LaneZero/planner/PlanningOrchestrator.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
 #include <LaneZero/planner/BehaviorPlanner.h>
 #include <LaneZero/planner/MotionPlanner.h>
-#include <LaneZero/planner/ControlPlanner.h>
 #include <LaneZero/simulation/WorldState.h>
 #include <LaneZero/scenario/Goal.h>
 
-namespace LaneZero
-{
+namespace py = pybind11;
 
-PlanningOrchestrator::PlanningOrchestrator()
-    : m_behavior_planner(std::make_unique<BehaviorPlanner>())
-    , m_motion_planner(std::make_unique<MotionPlanner>())
-    , m_control_planner(std::make_unique<ControlPlanner>())
+void wrap_planners(py::module & module)
 {
+    py::enum_<LaneZero::BehaviorState>(module, "BehaviorState")
+        .value("KeepLane", LaneZero::BehaviorState::KeepLane)
+        .value("CutInResponse", LaneZero::BehaviorState::CutInResponse)
+        .value("Emergency", LaneZero::BehaviorState::Emergency);
+
+    py::class_<LaneZero::BehaviorDecision>(module, "BehaviorDecision")
+        .def(py::init<>())
+        .def_readwrite("target_lane_id", &LaneZero::BehaviorDecision::target_lane_id)
+        .def_readwrite("target_speed_mps", &LaneZero::BehaviorDecision::target_speed_mps)
+        .def_readwrite("state", &LaneZero::BehaviorDecision::state)
+        .def_readwrite("cut_in_detected", &LaneZero::BehaviorDecision::cut_in_detected)
+        .def_readwrite("safe_distance_m", &LaneZero::BehaviorDecision::safe_distance_m);
+
+    py::class_<LaneZero::BehaviorPlanner>(module, "BehaviorPlanner")
+        .def(py::init<>())
+        .def("plan", &LaneZero::BehaviorPlanner::plan, py::arg("world_state"), py::arg("goal"), "Plan behavior based on world state and goal");
+
+    py::class_<LaneZero::MotionTrajectory>(module, "MotionTrajectory")
+        .def(py::init<>())
+        .def_readwrite("positions_s_m", &LaneZero::MotionTrajectory::positions_s_m)
+        .def_readwrite("velocities_mps", &LaneZero::MotionTrajectory::velocities_mps)
+        .def_readwrite("timestamps_s", &LaneZero::MotionTrajectory::timestamps_s);
+
+    py::class_<LaneZero::MotionPlanner>(module, "MotionPlanner")
+        .def(py::init<>())
+        .def("plan", &LaneZero::MotionPlanner::plan, py::arg("decision"), py::arg("delta_t_s"), "Plan trajectory based on behavior decision");
 }
-
-PlanningOrchestrator::~PlanningOrchestrator() = default;
-
-PlanResult PlanningOrchestrator::plan(WorldState const & world_state, Goal const & goal, double delta_t_s)
-{
-    BehaviorDecision behavior = m_behavior_planner->plan(world_state, goal);
-    MotionTrajectory trajectory = m_motion_planner->plan(behavior, delta_t_s);
-    ControlCommand control = m_control_planner->plan(trajectory, delta_t_s);
-
-    PlanResult result;
-    result.acceleration_mps2 = control.acceleration_mps2;
-    result.steering_angle_rad = control.steering_angle_rad;
-    return result;
-}
-
-} /* end namespace LaneZero */
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

@@ -12,7 +12,7 @@
         "roads": [
             {
                 "id": "road_1",
-                "length": 200,
+                "length": 1000,
                 "speed_limit": 30,
                 "reference_line": [
                     {
@@ -20,14 +20,14 @@
                         "y": 0
                     },
                     {
-                        "x": 200,
+                        "x": 1000,
                         "y": 0
                     }
                 ],
                 "lane_sections": [
                     {
                         "s_start": 0,
-                        "s_end": 200,
+                        "s_end": 1000,
                         "lanes": [
                             {
                                 "lane_id": 0,
@@ -45,7 +45,7 @@
                                     {
                                         "s_offset": 0,
                                         "a": 3.5,
-                                        "valid_length": 200
+                                        "valid_length": 1000
                                     }
                                 ]
                             },
@@ -59,7 +59,7 @@
                                     {
                                         "s_offset": 0,
                                         "a": 3.5,
-                                        "valid_length": 200
+                                        "valid_length": 1000
                                     }
                                 ]
                             }
