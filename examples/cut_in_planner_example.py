@@ -75,16 +75,32 @@ def run_cut_in_with_planner(use_viewer=False):
         return
 
     entities = scenario.entities()
+    init_actions = scenario.init().actions
+
+    entity_states = {}
+    for action in init_actions:
+        entity_name = action.entity
+        if entity_name not in entity_states:
+            entity_states[entity_name] = {}
+
+        if action.type == lz.ActionType.Teleport and action.position is not None:
+            pos = action.position
+            if isinstance(pos, lz.LanePosition):
+                entity_states[entity_name]["position"] = pos.s
+                entity_states[entity_name]["lane_id"] = pos.lane_id
+        elif action.type == lz.ActionType.Speed and action.target_speed is not None:
+            entity_states[entity_name]["velocity"] = action.target_speed
 
     print("\n3. Creating vehicles based on scenario...")
     for entity in entities:
         if entity.name == "ego":
+            ego_state = entity_states.get("ego", {})
             ego_vehicle = lz.Vehicle(
                 id=1,
                 type=lz.VehicleType.Car,
-                position=10.0,
-                velocity=20.0,
-                lane_id=-1,
+                position=ego_state.get("position", 10.0),
+                velocity=ego_state.get("velocity", 20.0),
+                lane_id=ego_state.get("lane_id", -1),
                 length=entity.dimensions.length,
                 width=entity.dimensions.width,
             )
@@ -96,12 +112,13 @@ def run_cut_in_with_planner(use_viewer=False):
                 f"velocity={ego_vehicle.velocity_mps:.1f}m/s, lane={ego_vehicle.current_lane_id}"
             )
         else:
+            npc_state = entity_states.get("npc", {})
             npc_vehicle = lz.Vehicle(
                 id=2,
                 type=lz.VehicleType.Car,
-                position=25.0,
-                velocity=15.0,
-                lane_id=-2,
+                position=npc_state.get("position", 25.0),
+                velocity=npc_state.get("velocity", 15.0),
+                lane_id=npc_state.get("lane_id", -2),
                 length=entity.dimensions.length,
                 width=entity.dimensions.width,
             )
@@ -114,7 +131,12 @@ def run_cut_in_with_planner(use_viewer=False):
                 f"velocity={npc_vehicle.velocity_mps:.1f}m/s, lane={npc_vehicle.current_lane_id}"
             )
 
-    print("   (NPC starts 15m ahead in lane -2, ego traveling faster will catch up)")
+    ego_pos = entity_states.get("ego", {}).get("position", 10.0)
+    npc_pos = entity_states.get("npc", {}).get("position", 25.0)
+    distance_ahead = npc_pos - ego_pos
+    print(
+        f"   (NPC starts {distance_ahead:.1f}m ahead in lane -2, ego traveling faster will catch up)"
+    )
 
     print("\n4. Initializing scenario and planners...")
     world_state = simulation.get_world_state()
