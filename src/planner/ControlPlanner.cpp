@@ -35,11 +35,41 @@ namespace LaneZero
 ControlCommand ControlPlanner::plan(MotionTrajectory const & trajectory, double delta_t_s)
 {
     ControlCommand command;
-    if (!trajectory.velocities_mps.empty())
-    {
-        command.acceleration_mps2 = 0.0;
-    }
+    command.acceleration_mps2 = 0.0;
     command.steering_angle_rad = 0.0;
+
+    if (trajectory.velocities_mps.size() < 2 || trajectory.timestamps_s.size() < 2)
+    {
+        return command;
+    }
+
+    double velocity_current_mps = trajectory.velocities_mps[0];
+    double velocity_target_mps = trajectory.velocities_mps[1];
+    double time_delta_s = trajectory.timestamps_s[1] - trajectory.timestamps_s[0];
+
+    if (time_delta_s <= 0.0)
+    {
+        return command;
+    }
+
+    double desired_acceleration_mps2 = (velocity_target_mps - velocity_current_mps) / time_delta_s;
+
+    constexpr double maximum_acceleration_mps2 = 3.0;
+    constexpr double maximum_deceleration_mps2 = -8.0;
+
+    if (desired_acceleration_mps2 > maximum_acceleration_mps2)
+    {
+        command.acceleration_mps2 = maximum_acceleration_mps2;
+    }
+    else if (desired_acceleration_mps2 < maximum_deceleration_mps2)
+    {
+        command.acceleration_mps2 = maximum_deceleration_mps2;
+    }
+    else
+    {
+        command.acceleration_mps2 = desired_acceleration_mps2;
+    }
+
     return command;
 }
 
