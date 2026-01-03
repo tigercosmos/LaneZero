@@ -33,6 +33,7 @@
 #include <memory>
 
 #include <LaneZero/physics_engine/PhysicsEngine.h>
+#include <LaneZero/collision/CollisionDetection.h>
 
 namespace LaneZero
 {
@@ -88,6 +89,10 @@ public:
 
     void set_physics_parameters(LaneZero::VehiclePhysicsParameters const & parameters);
     LaneZero::VehiclePhysicsParameters get_physics_parameters() const;
+
+    LaneZero::AxisAlignedBoundingBox get_aabb() const;
+
+    bool check_collision_with(Vehicle const & other) const;
 
     virtual ~Vehicle() = default;
 

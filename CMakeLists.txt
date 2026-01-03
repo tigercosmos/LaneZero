@@ -136,6 +136,7 @@ pybind11_add_module(_core
     src/physics_engine/pymod/wrap_PhysicsEngine.cpp
     src/scenario/pymod/wrap_Scenario.cpp
     src/planner/pymod/wrap_planners.cpp
+    src/collision/pymod/wrap_CollisionDetection.cpp
 )
 
 target_include_directories(_core PRIVATE
@@ -148,6 +149,7 @@ target_include_directories(_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scenario
     ${CMAKE_CURRENT_SOURCE_DIR}/src/planner
     ${CMAKE_CURRENT_SOURCE_DIR}/src/physics_engine
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/collision
     ${rapidjson_SOURCE_DIR}/include
 )
 

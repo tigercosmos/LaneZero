@@ -95,7 +95,14 @@ void wrap_Vehicle(py::module & module)
              "Set the physics parameters for the vehicle")
         .def("get_physics_parameters",
              &Vehicle::get_physics_parameters,
-             "Get the physics parameters for the vehicle");
+             "Get the physics parameters for the vehicle")
+        .def("get_aabb",
+             &Vehicle::get_aabb,
+             "Get the axis-aligned bounding box for the vehicle")
+        .def("check_collision_with",
+             &Vehicle::check_collision_with,
+             py::arg("other"),
+             "Check if this vehicle collides with another vehicle");
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

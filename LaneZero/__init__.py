@@ -56,6 +56,9 @@ RigidBodyState = _core.RigidBodyState
 VehicleControl = _core.VehicleControl
 VehiclePhysicsParameters = _core.VehiclePhysicsParameters
 
+# Export collision detection classes
+AxisAlignedBoundingBox = _core.AxisAlignedBoundingBox
+
 # Export scenario classes
 WorldPosition = _core.WorldPosition
 LanePosition = _core.LanePosition
@@ -111,6 +114,7 @@ __all__ = [
     "RigidBodyState",
     "VehicleControl",
     "VehiclePhysicsParameters",
+    "AxisAlignedBoundingBox",
     "WorldPosition",
     "LanePosition",
     "RoadPosition",

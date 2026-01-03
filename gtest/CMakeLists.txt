@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(tests
     test_main.cpp
+    test_collision.cpp
     ../src/map/Map.cpp
     ../src/vehicle/Vehicle.cpp
     ../src/simulation/Simulation.cpp
@@ -31,6 +32,7 @@ target_include_directories(tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/scenario
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/planner
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/physics_engine
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/collision
     ${rapidjson_SOURCE_DIR}/include
 )
 target_link_libraries(tests PRIVATE GTest::gtest_main)

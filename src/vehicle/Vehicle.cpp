@@ -30,6 +30,7 @@
 #include <LaneZero/map/Map.h>
 #include <LaneZero/vehicle/Vehicle.h>
 #include <LaneZero/physics_engine/BicycleModelEngine.h>
+#include <LaneZero/collision/CollisionDetection.h>
 
 Vehicle::Vehicle(int32_t id,
                  VehicleType type,
@@ -194,6 +195,23 @@ void Vehicle::set_physics_parameters(LaneZero::VehiclePhysicsParameters const & 
 LaneZero::VehiclePhysicsParameters Vehicle::get_physics_parameters() const
 {
     return m_physics_parameters;
+}
+
+LaneZero::AxisAlignedBoundingBox Vehicle::get_aabb() const
+{
+    return LaneZero::AxisAlignedBoundingBox::from_rotated_rectangle(
+        m_physics_state.x_m,
+        m_physics_state.y_m,
+        length_m,
+        width_m,
+        m_physics_state.yaw_rad);
+}
+
+bool Vehicle::check_collision_with(Vehicle const & other) const
+{
+    LaneZero::AxisAlignedBoundingBox my_aabb = get_aabb();
+    LaneZero::AxisAlignedBoundingBox other_aabb = other.get_aabb();
+    return my_aabb.intersects(other_aabb);
 }
 
 // vim: set ff=unix fenc=utf8 et sw=4 ts=4 sts=4:

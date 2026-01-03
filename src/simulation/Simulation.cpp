@@ -30,6 +30,7 @@
 #include <random>
 
 #include <LaneZero/simulation/Simulation.h>
+#include <LaneZero/collision/CollisionDetection.h>
 
 Simulation::Simulation()
     : current_time_s(0.0)
@@ -129,16 +130,9 @@ bool Simulation::check_collision()
     {
         for (size_t j = i + 1; j < vehicles.size(); ++j)
         {
-            if (vehicles[i]->current_lane_id == vehicles[j]->current_lane_id)
+            if (vehicles[i]->check_collision_with(*vehicles[j]))
             {
-                double dist =
-                    std::abs(vehicles[i]->position_s_m - vehicles[j]->position_s_m);
-                double min_dist =
-                    (vehicles[i]->length_m + vehicles[j]->length_m) / 2.0;
-                if (dist < min_dist)
-                {
-                    return true;
-                }
+                return true;
             }
         }
     }
