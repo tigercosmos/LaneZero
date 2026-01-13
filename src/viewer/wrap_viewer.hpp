@@ -82,6 +82,7 @@ public:
             return false;
         }
 
+#ifndef LANEZERO_PYSIDE6_FULL
         QObject * q = PySide::convertToQObject(src.ptr(), /* raiseError */ true);
         if (!q)
         {
@@ -90,6 +91,9 @@ public:
 
         value = qobject_cast<type *>(q);
         return true;
+#else
+        return false;
+#endif
     }
 
     static handle cast(type const & src, return_value_policy /* policy */, handle /* parent */)
@@ -104,6 +108,7 @@ public:
             return none().inc_ref();
         }
 
+#ifndef LANEZERO_PYSIDE6_FULL
         auto * cppSelf = const_cast<type *>(src);
         PyTypeObject * sbk_type = PySide::getTypeForQObject(cppSelf);
         PyObject * pyOut = PySide::getWrapperForQObject(cppSelf, sbk_type);
@@ -113,6 +118,9 @@ public:
         }
 
         return handle(pyOut);
+#else
+        throw std::runtime_error("Qt type casting not implemented for LANEZERO_PYSIDE6_FULL mode");
+#endif
     }
 
     static constexpr auto name = const_name("PySide6.QtCore.QObject");
